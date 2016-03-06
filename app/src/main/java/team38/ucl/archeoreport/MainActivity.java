@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            ImageView mImageView = (ImageView)findViewById(R.id.mImageView);
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mImageView.setImageBitmap(imageBitmap);
+            AnnotationView v = (AnnotationView)findViewById(R.id.annotation);
+            v.setBgimg(imageBitmap);
         }
     }
 
