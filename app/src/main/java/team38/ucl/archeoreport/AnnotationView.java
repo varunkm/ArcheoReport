@@ -1,7 +1,9 @@
 package team38.ucl.archeoreport;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.View;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -26,8 +28,8 @@ public class AnnotationView extends View {
     private Canvas drawCanvas;
     //canvas bitmap
     private Bitmap canvasBitmap;
-
-
+    private boolean eraserMode= false;
+    private String defect;
     public AnnotationView(Context context, AttributeSet attrs)
     {
         super(context,attrs);
@@ -39,7 +41,7 @@ public class AnnotationView extends View {
     public void setBgimg(Bitmap img)
     {
         this.bgimg = img;
-        this.setBackground(new BitmapDrawable(getContext().getResources(),bgimg));
+        this.setBackground(new BitmapDrawable(getContext().getResources(), bgimg));
     }
     @Override
     protected void onDraw(Canvas canvas)
@@ -62,6 +64,7 @@ public class AnnotationView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 drawCanvas.drawPath(drawPath, drawPaint);
+
                 drawPath.reset();
                 break;
             default:
@@ -87,8 +90,27 @@ public class AnnotationView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
-        super.onSizeChanged(w,h,oldw,oldh);
+        super.onSizeChanged(w, h, oldw, oldh);
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
+    }
+
+    public void setColor(String color) {
+        color = color.toLowerCase();
+        if (paintColor != Color.parseColor(color)){
+            Log.i("Color Change",color+"  "+Color.parseColor(color));
+            this.paintColor = Color.parseColor(color);
+            drawPaint.setColor(paintColor);
+            invalidate();
+        }
+    }
+
+    public void setEraserMode(Boolean erase)
+    {
+        eraserMode = erase;
+    }
+    public void setDefect(String defect)
+    {
+        this.defect = defect;
     }
 }
