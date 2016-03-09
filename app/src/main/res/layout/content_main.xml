@@ -24,15 +24,23 @@
             android:id="@+id/defspinner"
             android:layout_height="wrap_content">
         </Spinner>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pensizespin">
+
+        </Spinner>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/savebutton"
             android:text="@string/saveimage"/>
-        <Button
+        <ToggleButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/eraserbutton"
+            android:textOff="Pen"
+            android:textOn="Eraser"
             android:text="@string/undo"/>
     </LinearLayout>
     <team38.ucl.archeoreport.AnnotationView

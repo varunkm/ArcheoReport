@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements OnItemSelectedLis
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public Spinner colSpin;
     public Spinner defSpin;
+    public Spinner sizeSpin;
     public AnnotationView v;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +46,39 @@ public class MainActivity extends AppCompatActivity implements OnItemSelectedLis
 
         colSpin = (Spinner)findViewById(R.id.colorspinner);
         defSpin = (Spinner)findViewById(R.id.defspinner);
+        sizeSpin = (Spinner)findViewById(R.id.pensizespin);
         Button saveButton = (Button)findViewById(R.id.savebutton);
         ToggleButton eraserButton = (ToggleButton)findViewById(R.id.eraserbutton);
+
         ArrayAdapter<CharSequence> colAdapter = ArrayAdapter.createFromResource(this,R.array.color_choices,android.R.layout.simple_spinner_item);
         ArrayAdapter<CharSequence> defAdapter = ArrayAdapter.createFromResource(this,R.array.defect_choices,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> sizeAdapter = ArrayAdapter.createFromResource(this,R.array.size_choices,android.R.layout.simple_spinner_item);
 
         colAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         defAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         colSpin.setAdapter(colAdapter);
         defSpin.setAdapter(defAdapter);
+        sizeSpin.setAdapter(sizeAdapter);
+
         colSpin.setOnItemSelectedListener(this);
         defSpin.setOnItemSelectedListener(this);
+        sizeSpin.setOnItemSelectedListener(this);
+
+        eraserButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    v = (AnnotationView)findViewById(R.id.annotation);
+                    v.setEraserMode(true);
+                } else {
+                    // The toggle is disabled
+                    v = (AnnotationView)findViewById(R.id.annotation);
+                    v.setEraserMode(false);
+                }
+            }
+        });
 
     }
 
@@ -85,6 +109,11 @@ public class MainActivity extends AppCompatActivity implements OnItemSelectedLis
         if(spinner.getId() == R.id.colorspinner){
             String col = (String)spinner.getItemAtPosition(pos);
             v.setColor(col);
+        }
+
+        if(spinner.getId() == R.id.pensizespin){
+            int size = Integer.parseInt((String)spinner.getItemAtPosition(pos));
+            v.setPenSize(size);
         }
     }
 

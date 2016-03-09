@@ -2,6 +2,8 @@ package team38.ucl.archeoreport;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.view.MotionEvent;
+
+import java.util.ArrayList;
 
 /**
  * Created by varunmathur on 06/03/16.
@@ -30,6 +34,8 @@ public class AnnotationView extends View {
     private Bitmap canvasBitmap;
     private boolean eraserMode= false;
     private String defect;
+    private int brushSize = 10;
+
     public AnnotationView(Context context, AttributeSet attrs)
     {
         super(context,attrs);
@@ -46,9 +52,11 @@ public class AnnotationView extends View {
     @Override
     protected void onDraw(Canvas canvas)
     {
+
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
         canvas.drawPath(drawPath, drawPaint);
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event)
@@ -80,7 +88,7 @@ public class AnnotationView extends View {
         drawPath  = new Path();
         drawPaint.setColor(paintColor);
         drawPaint.setAntiAlias(true);
-        drawPaint.setStrokeWidth(20);
+        drawPaint.setStrokeWidth(brushSize);
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -105,9 +113,22 @@ public class AnnotationView extends View {
         }
     }
 
+    public void setPenSize(int size)
+    {
+        brushSize = size;
+        drawPaint.setStrokeWidth(brushSize);
+        invalidate();
+    }
+
     public void setEraserMode(Boolean erase)
     {
         eraserMode = erase;
+        if (eraserMode){
+            drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        }
+        else{
+            drawPaint.setXfermode(null);
+        }
     }
     public void setDefect(String defect)
     {
