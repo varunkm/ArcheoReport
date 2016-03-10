@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="team38.ucl.archeoreport" >
-    <uses-feature android:name="android.hardware.camera2"
-                  android:required="true"/>
+
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,8 +25,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ExhibitionActivity"
-            android:label="@string/title_activity_exhibition"
+            android:name=".ViewExhibitionsActivity"
+            android:label="@string/title_activity_view_exhibitions"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".AddExhibitionActivity"
+            android:label="@string/title_activity_add_exhibition_activity"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

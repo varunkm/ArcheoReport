@@ -21,6 +21,8 @@
         <item>Spots/Stains</item>
         <item>General</item>
     </string-array>
+    <string name="title_activity_view_exhibitions">ViewExhibitionsActivity</string>
+    <string name="title_activity_add_exhibition_activity">AddExhibitionACtivity</string>
 
 
 </resources>
