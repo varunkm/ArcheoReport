@@ -4,6 +4,7 @@
     <string name="title_activity_exhibition">ExhibitionActivity</string>
     <string name="undo">Undo</string>
     <string name="saveimage">Save Image</string>
+    <string name="imagepath">/ArcheoReport/images/</string>
 
     <string-array name="defect_choices">
         <item>Lifting</item>
@@ -18,6 +19,7 @@
         <item>Oxidations</item>
         <item>Dirt</item>
         <item>Spots/Stains</item>
+        <item>General</item>
     </string-array>
 
 

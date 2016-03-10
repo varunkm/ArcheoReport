@@ -40,8 +40,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/eraserbutton"
             android:textOff="Pen"
-            android:textOn="Eraser"
-            android:text="@string/undo"/>
+            android:textOn="Eraser"/>
     </LinearLayout>
     <team38.ucl.archeoreport.AnnotationView
         android:id="@+id/annotation"

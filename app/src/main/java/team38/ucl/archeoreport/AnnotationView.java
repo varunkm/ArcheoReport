@@ -14,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,8 +34,11 @@ public class AnnotationView extends View {
     //canvas bitmap
     private Bitmap canvasBitmap;
     private boolean eraserMode= false;
-    private String defect;
     private int brushSize = 10;
+    private ArrayList<String> defects= new ArrayList<String>();
+    private String currentDefect;
+    private String invNum;
+
 
     public AnnotationView(Context context, AttributeSet attrs)
     {
@@ -72,7 +76,9 @@ public class AnnotationView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 drawCanvas.drawPath(drawPath, drawPaint);
-
+                if(!eraserMode){
+                    defects.add(currentDefect);
+                }
                 drawPath.reset();
                 break;
             default:
@@ -132,6 +138,14 @@ public class AnnotationView extends View {
     }
     public void setDefect(String defect)
     {
-        this.defect = defect;
+        this.currentDefect = defect;
+    }
+
+    public String getInvNum() {
+        return invNum;
+    }
+
+    public ArrayList<String> getDefects(){
+        return defects;
     }
 }
