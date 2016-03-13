@@ -1,78 +1,93 @@
-package team38.ucl.archeoreport;
+package team38.ucl.archeoreport.Views.Viewers;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import team38.ucl.archeoreport.Models.Exhibition;
+import team38.ucl.archeoreport.R;
+import team38.ucl.archeoreport.Views.Creators.AddExhibitionActivity;
 
 public class ViewExhibitionsActivity extends AppCompatActivity {
 
-    private ArrayList<Exhibition> exhibitions;
-    private SQLiteDatabase myDB;
+    private List<Exhibition> exhibitions;
     ExhibitionListAdapter exAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //BEGIN BOILERPLATE
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_exhibitions);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("Exhibitions");
-        exhibitions = new ArrayList<Exhibition>();
+        //END BOILERPLATE
+
+        //Initialise collection, ListView and adapter:
+        exhibitions = Exhibition.listAll(Exhibition.class);
         ListView exListView = (ListView)findViewById(R.id.exhibitionlist);
         exAdapter = new ExhibitionListAdapter();
         exListView.setAdapter(exAdapter);
-
-        LoadExhibitionsFromDB();
         exAdapter.notifyDataSetChanged();
 
-        myDB = openOrCreateDatabase("ArcheoReport", MODE_PRIVATE,null);
-        myDB.execSQL("CREATE TABLE IF NOT EXISTS Exhibitions(Name VARCHAR,Location VARCHAR,Date INT);");
+        exListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position,long id) {
+                //TODO Make sure it passes ID to reports view
+                Exhibition item = exhibitions.get(position);
+                Intent intent = new Intent(ViewExhibitionsActivity.this, ViewReportsActivity.class);
+                intent.putExtra("ExhibitionID",item.getId());
+                startActivity(intent);
+            }
+        });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(ViewExhibitionsActivity.this, AddExhibitionActivity.class);
+                startActivity(intent);
             }
         });
     }
 
-    private void LoadExhibitionsFromDB(){
-        Cursor resultset = myDB.rawQuery("Select * from Exhibitions",null);
-        if (resultset.getCount() == 0)
-        {
-            exhibitions = new ArrayList<Exhibition>();
-            return;
-        }
-        else{
-            resultset.moveToFirst();
-            do{
-                Exhibition ex;
-                String name = resultset.getString(1);
-                String loc = resultset.getString(2);
-                Date date = new Date(resultset.getInt(3));
-                resultset.moveToNext();
-                ex = new Exhibition(name,loc,date);
-                exhibitions.add(ex);
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        reInitialiseList();
 
-            } while(!resultset.isLast());
-        }
+        Log.i("VIEW EXHIBITIONS","ONRESTART");
+    }
+    private void reInitialiseList()
+    {
+        exhibitions = Exhibition.listAll(Exhibition.class);
+        ListView exListView = (ListView)findViewById(R.id.exhibitionlist);
+        exAdapter = new ExhibitionListAdapter();
+        exListView.setAdapter(exAdapter);
+        exAdapter.notifyDataSetChanged();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reInitialiseList();
+        Log.i("VIEW EXHIBITIONS", "ONRESUME");
+
+    }
 
     private class ExhibitionListAdapter extends ArrayAdapter<Exhibition> {
         public ExhibitionListAdapter(){
@@ -98,5 +113,6 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
 
             return view;
         }
+
     }
 }

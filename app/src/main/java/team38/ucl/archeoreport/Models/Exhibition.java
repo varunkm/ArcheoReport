@@ -1,19 +1,26 @@
-package team38.ucl.archeoreport;
+package team38.ucl.archeoreport.Models;
 
+import com.orm.dsl.Table;
+import com.orm.SugarRecord;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by varunmathur on 10/03/16.
  */
-public class Exhibition {
-    private String name;
-    private String location;
-    private Date date;
 
+public class Exhibition extends SugarRecord{
+    String name;
+    String location;
+    long date;
+
+    public Exhibition(){
+
+    }
     public Exhibition(String name, String location, Date date) {
         this.name = name;
         this.location = location;
-        this.date = date;
+        this.date = date.getTime();
     }
 
     public String getName() {
@@ -33,10 +40,11 @@ public class Exhibition {
     }
 
     public Date getDate() {
-        return date;
+        return new Date(date);
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = date.getTime();
     }
+
 }

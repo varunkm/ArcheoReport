@@ -23,6 +23,9 @@
     </string-array>
     <string name="title_activity_view_exhibitions">ViewExhibitionsActivity</string>
     <string name="title_activity_add_exhibition_activity">AddExhibitionACtivity</string>
+    <string name="title_activity_view_reports">ViewReportsActivity</string>
+    <string name="ViewReportsTitle">Reports</string>
+    <string name="title_activity_create_report">CreateReportActivity</string>
 
 
 </resources>
