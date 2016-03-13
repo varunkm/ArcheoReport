@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="color_choices">
+        <item>Red</item>
+        <item>Blue</item>
+        <item>Green</item>
+        <item>Yellow</item>
+    </string-array>
+
+    <string-array name="size_choices">
+        <item>1</item>
+        <item>5</item>
+        <item>7</item>
+        <item>10</item>
+        <item>20</item>
+        <item>40</item>
+    </string-array>
+</resources>

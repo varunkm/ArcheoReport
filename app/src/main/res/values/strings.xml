@@ -1,4 +1,31 @@
 <resources>
     <string name="app_name">ArcheoReport</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_exhibition">ExhibitionActivity</string>
+    <string name="undo">Undo</string>
+    <string name="saveimage">Save Image</string>
+    <string name="imagepath">/ArcheoReport/images/</string>
+
+    <string-array name="defect_choices">
+        <item>Lifting</item>
+        <item>Fissures</item>
+        <item>Losses</item>
+        <item>Holes</item>
+        <item>Abrasions</item>
+        <item>Scratches</item>
+        <item>Incrustations</item>
+        <item>Cracks</item>
+        <item>Craqueleres</item>
+        <item>Oxidations</item>
+        <item>Dirt</item>
+        <item>Spots/Stains</item>
+        <item>General</item>
+    </string-array>
+    <string name="title_activity_view_exhibitions">ViewExhibitionsActivity</string>
+    <string name="title_activity_add_exhibition_activity">AddExhibitionACtivity</string>
+    <string name="title_activity_view_reports">ViewReportsActivity</string>
+    <string name="ViewReportsTitle">Reports</string>
+    <string name="title_activity_create_report">CreateReportActivity</string>
+
+
 </resources>

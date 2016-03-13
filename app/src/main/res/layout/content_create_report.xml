@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    android:fillViewport="false">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:id="@+id/addImageArtifact"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Details"
+                android:id="@+id/details"
+                android:layout_below="@+id/addImageArtifact"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nrInv"
+                android:layout_below="@+id/details"
+                android:layout_alignParentStart="true"
+                android:hint="Nr Inv: " />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/det1"
+                android:layout_below="@+id/nrInv"
+                android:layout_alignParentStart="true"
+                android:hint="Oggetto:" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/det2"
+                android:layout_below="@+id/det1"
+                android:layout_alignParentStart="true"
+                android:hint="Tecnica:" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/det3"
+                android:layout_below="@+id/det2"
+                android:layout_alignParentStart="true"
+                android:hint="Dimens:" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/det4"
+                android:layout_below="@+id/det3"
+                android:layout_alignParentStart="true"
+                android:hint="Datazione:" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/det5"
+                android:layout_below="@+id/det4"
+                android:layout_alignParentStart="true"
+                android:hint="Collaczione:" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/det6"
+                android:layout_below="@+id/det5"
+                android:layout_alignParentStart="true"
+                android:hint="Stato Conserv: " />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/det7"
+                android:layout_below="@+id/det6"
+                android:layout_alignParentStart="true"
+                android:hint="Priorita: " />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/det8"
+                android:layout_below="@+id/det7"
+                android:layout_alignParentStart="true"
+                android:hint="Necesita di: " />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/det9"
+                android:layout_below="@+id/det8"
+                android:layout_alignParentStart="true"
+                android:hint="Interventi Fatti:" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="General Condition"
+                android:id="@+id/generalCondition"
+                android:layout_below="@+id/addImageArtifact"
+                android:layout_toEndOf="@+id/addImageArtifact" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Defects"
+                android:id="@+id/defects"
+                android:layout_marginStart="82dp"
+                android:layout_above="@+id/plasticCheck"
+                android:layout_toEndOf="@+id/generalCondition" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/crateNumber"
+                android:hint="Crate Number:"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/defects" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Support Fondazione"
+                android:id="@+id/supporFondazioneCheckBox"
+                android:layout_below="@+id/crateNumber"
+                android:layout_alignStart="@+id/crateNumber"
+                android:checked="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Wrapping"
+                android:id="@+id/wrapping"
+                android:layout_below="@+id/addImageArtifact"
+                android:layout_toEndOf="@+id/supporFondazioneCheckBox" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plastic"
+                android:id="@+id/plasticCheck"
+                android:layout_alignStart="@+id/wrapping"
+                android:checked="false"
+                android:layout_alignTop="@+id/nrInv" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A.F. Paper"
+                android:id="@+id/paperCheck"
+                android:checked="false"
+                android:layout_below="@+id/plasticCheck"
+                android:layout_alignStart="@+id/plasticCheck" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Tape"
+                android:id="@+id/tapeCheck"
+                android:checked="false"
+                android:layout_below="@+id/paperCheck"
+                android:layout_alignStart="@+id/paperCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Protection"
+                android:id="@+id/protection"
+                android:layout_below="@+id/tapeCheck"
+                android:layout_alignStart="@+id/tapeCheck" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ethafoam"
+                android:id="@+id/foamCheck"
+                android:layout_below="@+id/protection"
+                android:layout_alignStart="@+id/protection"
+                android:checked="false" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Foam Rubber"
+                android:id="@+id/foamRubberCheck"
+                android:checked="false"
+                android:layout_below="@+id/foamCheck"
+                android:layout_alignStart="@+id/foamCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Position"
+                android:id="@+id/position"
+                android:layout_below="@+id/foamRubberCheck"
+                android:layout_alignStart="@+id/foamRubberCheck" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Flat"
+                android:id="@+id/flatCheck"
+                android:layout_below="@+id/position"
+                android:layout_alignStart="@+id/position"
+                android:checked="false" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vertical"
+                android:id="@+id/verticalCheck"
+                android:layout_below="@+id/flatCheck"
+                android:layout_alignStart="@+id/flatCheck"
+                android:checked="false" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="On One Side"
+                android:id="@+id/sideCheck"
+                android:layout_below="@+id/verticalCheck"
+                android:layout_alignStart="@+id/verticalCheck"
+                android:checked="false" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/CondNotes"
+                android:hint="Condition Notes:"
+                android:layout_below="@+id/specialCare"
+                android:layout_alignStart="@+id/specialCare" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Exit from museum"
+                android:id="@+id/textView4"
+                android:layout_alignBaseline="@+id/det8"
+                android:layout_alignBottom="@+id/det8"
+                android:layout_toStartOf="@+id/sideCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="End of exhibition"
+                android:id="@+id/textView5"
+                android:layout_above="@+id/textView7"
+                android:layout_toEndOf="@+id/sideCheck" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Install in Exhibition"
+                android:id="@+id/textView6"
+                android:layout_below="@+id/textView4"
+                android:layout_alignEnd="@+id/textView4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Return in museum"
+                android:id="@+id/textView7"
+                android:layout_alignTop="@+id/textView6"
+                android:layout_alignEnd="@+id/textView5" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Same Condition"
+                android:id="@+id/checkBox"
+                android:checked="false"
+                android:layout_below="@+id/det8"
+                android:layout_alignEnd="@+id/textView4" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Same Condition"
+                android:id="@+id/checkBox2"
+                android:checked="false"
+                android:layout_below="@+id/det8"
+                android:layout_toEndOf="@+id/tapeCheck" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/generalCondition"
+                android:layout_toRightOf="@+id/addImageArtifact"
+                android:id="@+id/conditionGroup">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/goodcon"
+                    android:text="Good"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/faircon"
+                    android:text="Fairly Good"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/poorcon"
+                    android:text="Poor"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rescon"
+                    android:text="Restored"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/riccon"
+                    android:text="Ri-Composed"/>
+            </RadioGroup>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/specialCare"
+                android:hint="Special Care"
+                android:layout_below="@+id/conditionGroup"
+                android:layout_alignStart="@+id/conditionGroup" />
+        </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+
