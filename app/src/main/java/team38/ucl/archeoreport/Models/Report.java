@@ -4,6 +4,7 @@ import com.orm.SugarRecord;
 import com.orm.dsl.Table;
 
 import java.util.Date;
+import java.util.List;
 
 import team38.ucl.archeoreport.Models.Exhibition;
 
@@ -35,6 +36,7 @@ public class Report extends SugarRecord {
     boolean ethafoam;
     boolean foamRubber;
     String position;
+    List<Defect> defects;
 
     //TODO Generate PDF
     public Report(Exhibition exhibition, String invNum, Date date, String det1, String det2, String det3, String det4, String det5, String det6, String det7,
@@ -62,6 +64,8 @@ public class Report extends SugarRecord {
         this.ethafoam = ethafoam;
         this.foamRubber = foamRubber;
         this.position = position;
+        defects = Defect.find(Defect.class, "owner = ?", getId().toString());
+
     }
 
     public Report() {
@@ -155,5 +159,10 @@ public class Report extends SugarRecord {
 
     public String getPosition() {
         return position;
+    }
+
+    public List<Defect> getDefects()
+    {
+        return defects;
     }
 }

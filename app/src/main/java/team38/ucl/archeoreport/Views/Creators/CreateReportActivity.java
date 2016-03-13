@@ -9,12 +9,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
+import team38.ucl.archeoreport.Models.Defect;
 import team38.ucl.archeoreport.Models.Exhibition;
 import team38.ucl.archeoreport.Models.Report;
 import team38.ucl.archeoreport.R;
@@ -73,6 +77,9 @@ public class CreateReportActivity extends AppCompatActivity {
         boolean vert = ((CheckBox)(findViewById(R.id.verticalCheck))).isChecked();
         boolean flat = ((CheckBox)(findViewById(R.id.flatCheck))).isChecked();
         boolean side = ((CheckBox)(findViewById(R.id.sideCheck))).isChecked();
+
+
+
         String position = "";
         if (vert)
             position = "Vertical";
@@ -85,6 +92,19 @@ public class CreateReportActivity extends AppCompatActivity {
         //TODO Get dates from report creation screen
         Report rep = new Report(ExhibitionContext,nrInv, Calendar.getInstance().getTime(),det1_et,det2_et,det3_et,det4_et,det5_et,det6_et,det7_et,det8_et,det9_et,
                 condition,specialCare,crateNum,supportF,plastic,paper,noTape,ethafoam,foamRubber,position);
+
+        LinearLayout defContainer = (LinearLayout)findViewById(R.id.defsContainer);
+        int count = defContainer.getChildCount();
+        CheckBox v = null;
+        for(int i=0; i<count; i++) {
+            v = (CheckBox)defContainer.getChildAt(i);
+            //do something with your child element
+            if(v.isChecked()){
+                String d = v.getText().toString();
+                Defect defect = new Defect(d,rep);
+                defect.save();
+            }
+        }
 
         return rep;
     }
