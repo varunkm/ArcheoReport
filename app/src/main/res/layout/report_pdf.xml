@@ -1,13 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/pdfviewcontainer"
     android:padding="32dp"
+    android:background="#FFFFFF"
     android:layout_height="match_parent">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/maintitle"
         android:text="Condition Report"
-        android:textSize="30sp" />
+        android:textSize="32sp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/maintitle"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:id="@+id/detscontainer"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24dp"
+            android:text="General Details"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@+id/detscontainer"
+        android:layout_below="@+id/maintitle"
+        android:paddingTop="10dp"
+        android:id="@+id/defectscontainer"
+        android:paddingLeft="20dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Defects"
+            android:textSize="24dp"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@+id/defectscontainer"
+        android:layout_below="@+id/maintitle"
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wrapping"
+            android:textSize="24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/wrappingcontent"
+            android:text="Paper/Plastic/Tape"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Protection"
+            android:paddingTop="10dp"
+            android:textSize="24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/protectioncontent"
+            android:text="ethafoam/foamrubber"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="Position"
+            android:textSize="24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/positioncontent"
+            android:text="flat/vertical/on one side"/>
+
+    </LinearLayout>
+    
+    
     
 
-</LinearLayout>
+</RelativeLayout>

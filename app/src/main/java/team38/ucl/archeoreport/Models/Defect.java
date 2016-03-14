@@ -5,14 +5,22 @@ import com.orm.SugarRecord;
 /**
  * Created by varunmathur on 13/03/16.
  */
-public class Defect extends SugarRecord{
+public class Defect
+{
     String title;
-    Report owner;
-    public Defect()
-    {}
+    boolean present;
 
-    public Defect(String defect, Report owner) {
+    public Defect(String defect, boolean present) {
         this.title = defect;
-        this.owner = owner;
+        this.present = present;
+    }
+
+    public String toString()
+    {
+        if(present){
+            return title;
+        }
+        else
+            return "";
     }
 }
