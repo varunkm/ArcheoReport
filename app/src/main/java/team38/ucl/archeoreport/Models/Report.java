@@ -32,20 +32,6 @@ public class Report extends SugarRecord {
     String det7;
     String det8;
     String det9;
-
-    boolean def1;
-    boolean def2;
-    boolean def3;
-    boolean def4;
-    boolean def5;
-    boolean def6;
-    boolean def7;
-    boolean def8;
-    boolean def9;
-    boolean def10;
-    boolean def11;
-    boolean def12;
-
     String genCondition;
     String specialCare;
     String crateNumber;
@@ -57,7 +43,9 @@ public class Report extends SugarRecord {
     boolean foamRubber;
     String position;
 
-    public Report(Exhibition exhibition, String invNum, Date date, String det1, String det2, String det3, String det4, String det5, String det6, String det7, String det8, String det9, boolean def1, boolean def2, boolean def3, boolean def4, boolean def5, boolean def6, boolean def7, boolean def8, boolean def9, boolean def10, boolean def11, boolean def12, String genCondition, String specialCare, String crateNumber, boolean supportF, boolean plastic, boolean paper, boolean noTape, boolean ethafoam, boolean foamRubber, String position) {
+    public Report(Exhibition exhibition, String invNum, Date date, String det1, String det2, String det3, String det4, String det5, String det6, String det7,
+                  String det8, String det9, String genCondition, String specialCare, String crateNumber, boolean supportF,
+                  boolean plastic, boolean paper, boolean noTape, boolean ethafoam, boolean foamRubber, String position) {
         this.exhibition = exhibition;
         this.invNum = invNum;
         this.date = date.getTime();
@@ -70,18 +58,6 @@ public class Report extends SugarRecord {
         this.det7 = det7;
         this.det8 = det8;
         this.det9 = det9;
-        this.def1 = def1;
-        this.def2 = def2;
-        this.def3 = def3;
-        this.def4 = def4;
-        this.def5 = def5;
-        this.def6 = def6;
-        this.def7 = def7;
-        this.def8 = def8;
-        this.def9 = def9;
-        this.def10 = def10;
-        this.def11 = def11;
-        this.def12 = def12;
         this.genCondition = genCondition;
         this.specialCare = specialCare;
         this.crateNumber = crateNumber;
@@ -216,8 +192,6 @@ public class Report extends SugarRecord {
         return position;
     }
 
-
-
     public List<Detail> getDetailsAsList()
     {
         ArrayList<Detail> dets = new ArrayList<>();
@@ -234,23 +208,6 @@ public class Report extends SugarRecord {
         dets.add(new Detail("Special Care",specialCare));
         dets.add(new Detail("Crate Number",crateNumber));
         return dets;
-    }
-    public List<Defect> getDefectAsList()
-    {
-        ArrayList<Defect> defs = new ArrayList<>();
-        defs.add(new Defect("def1",def1));
-        defs.add(new Defect("def2",def2));
-        defs.add(new Defect("def3",def3));
-        defs.add(new Defect("def4",def4));
-        defs.add(new Defect("def5",def5));
-        defs.add(new Defect("def6",def6));
-        defs.add(new Defect("def7",def7));
-        defs.add(new Defect("def8",def8));
-        defs.add(new Defect("def9",def9));
-        defs.add(new Defect("def10",def10));
-        defs.add(new Defect("def11",def11));
-        defs.add(new Defect("def12",def12));
-        return defs;
     }
 
 }

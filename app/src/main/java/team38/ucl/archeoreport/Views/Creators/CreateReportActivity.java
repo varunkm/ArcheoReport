@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfRenderer;
 import android.os.Bundle;
@@ -43,6 +45,7 @@ import java.util.Date;
 import java.util.List;
 
 import team38.ucl.archeoreport.Models.Defect;
+import team38.ucl.archeoreport.Models.DefectSet;
 import team38.ucl.archeoreport.Models.Detail;
 import team38.ucl.archeoreport.Models.Exhibition;
 import team38.ucl.archeoreport.Models.Report;
@@ -60,6 +63,17 @@ public class CreateReportActivity extends AppCompatActivity {
         ExhibitionContext = Exhibition.findById(Exhibition.class, id);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        LinearLayout defContainer = (LinearLayout) findViewById(R.id.defsContainer);
+        int count = defContainer.getChildCount();
+        String[] names = getResources().getStringArray(R.array.defect_choices);
+        for(int i = 0; i < count; i++)
+        {
+            CheckBox v = (CheckBox)defContainer.getChildAt(i);
+            v.setText(names[i]);
+        }
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,9 +170,13 @@ public class CreateReportActivity extends AppCompatActivity {
         def12 = v.isChecked();
 
 
-        Report rep = new Report(ExhibitionContext, nrInv, Calendar.getInstance().getTime(), det1_et, det2_et, det3_et, det4_et, det5_et, det6_et, det7_et, det8_et, det9_et, def1,def2,def3,def4,def5,def6,def7,def8,def9,def10,def11,def12,
+
+        Report rep = new Report(ExhibitionContext, nrInv, Calendar.getInstance().getTime(), det1_et, det2_et, det3_et, det4_et, det5_et, det6_et, det7_et, det8_et, det9_et,
                 condition, specialCare, crateNum, supportF, plastic, paper, noTape, ethafoam, foamRubber, position);
         rep.save();
+
+        DefectSet repdefs = new DefectSet(def1,def2,def3,def4,def5,def6,def7,def8,def9,def10,def11,def12,this,rep);
+        repdefs.save();
 
         setContentView(R.layout.report_pdf);
         LinearLayout detscontain = (LinearLayout)findViewById(R.id.detscontainer);
@@ -168,20 +186,22 @@ public class CreateReportActivity extends AppCompatActivity {
         {
             TextView title = new TextView(this);
             title.setText(d.getTitle());
-            title.setTextSize(20);
+            title.setTextColor(Color.LTGRAY);
             TextView det = new TextView(this);
+            det.setTextColor(Color.BLACK);
             det.setText(d.getDetail());
             detscontain.addView(title);
             detscontain.addView(det);
         }
 
         LinearLayout defscontain = (LinearLayout)findViewById(R.id.defectscontainer);
-        ArrayList<Defect> defs = (ArrayList)rep.getDefectAsList();
+        ArrayList<String> defs = repdefs.getDefectsAsListofStrings();
         defscontain.setOrientation(LinearLayout.VERTICAL);
-        for(Defect d : defs)
+        for(String d : defs)
         {
             TextView title = new TextView(this);
-            title.setText(d.toString());
+            title.setText(d);
+            title.setTextColor(Color.BLACK);
             defscontain.addView(title);
         }
 
@@ -200,32 +220,41 @@ public class CreateReportActivity extends AppCompatActivity {
 
         reportview.buildDrawingCache(true);
         Bitmap b = Bitmap.createBitmap(reportview.getDrawingCache());
-        String filename = "REPORT"+rep.getInvNum();
+        PdfDocument document = new PdfDocument();
+
+        // crate a page description
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595,842,1).create();
+
+        // start a page
+        PdfDocument.Page page = document.startPage(pageInfo);
+
+        // draw something on the page
+        reportview.draw(page.getCanvas());
+
+        // finish the page
+        document.finishPage(page);
+        verifyStoragePermissions(this);
         try {
-            b.compress(Bitmap.CompressFormat.PNG,100,new FileOutputStream("/sdcard/ArcheoReport/"+filename + ".png"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return rep;
-    }
-
-
-    public void saveFile(String fileName, PdfDocument document) {
-
-        try {
-            verifyStoragePermissions(this);
-            File mypath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName + ".pdf");
-            document.writeTo(new FileOutputStream(mypath));
-
-            document.close();
-
+            File root = Environment.getExternalStorageDirectory();
+            root = new File(root,"ArcheoReport/");
+            root.mkdir();
+            String name = rep.getInvNum().replace(".","_");
+            name = name.replace(" ","-");
+            File docfile = new File(root,name+".pdf");
+            FileOutputStream pdfos = new FileOutputStream(docfile);
+            document.writeTo(pdfos);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // close the document
+        document.close();
+        return rep;
     }
+
+
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -253,30 +282,5 @@ public class CreateReportActivity extends AppCompatActivity {
                     REQUEST_EXTERNAL_STORAGE
             );
         }
-    }
-}
-
-class DetailsAdapter extends ArrayAdapter<Detail>{
-    public DetailsAdapter(Context context,ArrayList<Detail> details)
-    {
-        super(context, 0, details);
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-        Detail d= getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.detail_item_view, parent, false);
-        }
-        // Lookup view for data population
-        TextView title = (TextView) convertView.findViewById(R.id.titletext);
-        TextView text = (TextView) convertView.findViewById(R.id.detailtext);
-        // Populate the data into the template view using the data object
-        title.setText(d.getTitle());
-        text.setText(d.getDetail());
-        // Return the completed view to render on screen
-        return convertView;
     }
 }

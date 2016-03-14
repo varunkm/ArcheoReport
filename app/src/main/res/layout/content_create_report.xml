@@ -11,6 +11,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:gravity="center"
+            android:layout_gravity="center"
             android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,7 +34,7 @@
                 android:layout_alignParentStart="true" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/nrInv"
                 android:layout_below="@+id/details"
@@ -41,7 +42,7 @@
                 android:hint="Nr Inv: " />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det1"
                 android:layout_below="@+id/nrInv"
@@ -49,7 +50,7 @@
                 android:hint="Oggetto:" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det2"
                 android:layout_below="@+id/det1"
@@ -57,7 +58,7 @@
                 android:hint="Tecnica:" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det3"
                 android:layout_below="@+id/det2"
@@ -65,7 +66,7 @@
                 android:hint="Dimens:" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det4"
                 android:layout_below="@+id/det3"
@@ -73,7 +74,7 @@
                 android:hint="Datazione:" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det5"
                 android:layout_below="@+id/det4"
@@ -81,7 +82,7 @@
                 android:hint="Collaczione:" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det6"
                 android:layout_below="@+id/det5"
@@ -89,7 +90,7 @@
                 android:hint="Stato Conserv: " />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det7"
                 android:layout_below="@+id/det6"
@@ -97,7 +98,7 @@
                 android:hint="Priorita: " />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det8"
                 android:layout_below="@+id/det7"
@@ -105,7 +106,7 @@
                 android:hint="Necesita di: " />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det9"
                 android:layout_below="@+id/det8"
