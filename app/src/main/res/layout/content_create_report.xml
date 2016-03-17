@@ -11,6 +11,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:gravity="center"
+            android:layout_gravity="center"
             android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,7 +34,7 @@
                 android:layout_alignParentStart="true" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/nrInv"
                 android:layout_below="@+id/details"
@@ -41,7 +42,7 @@
                 android:hint="Nr Inv: " />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det1"
                 android:layout_below="@+id/nrInv"
@@ -49,7 +50,7 @@
                 android:hint="Oggetto:" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det2"
                 android:layout_below="@+id/det1"
@@ -57,7 +58,7 @@
                 android:hint="Tecnica:" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det3"
                 android:layout_below="@+id/det2"
@@ -65,7 +66,7 @@
                 android:hint="Dimens:" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det4"
                 android:layout_below="@+id/det3"
@@ -73,7 +74,7 @@
                 android:hint="Datazione:" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det5"
                 android:layout_below="@+id/det4"
@@ -81,7 +82,7 @@
                 android:hint="Collaczione:" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det6"
                 android:layout_below="@+id/det5"
@@ -89,7 +90,7 @@
                 android:hint="Stato Conserv: " />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det7"
                 android:layout_below="@+id/det6"
@@ -97,7 +98,7 @@
                 android:hint="Priorita: " />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det8"
                 android:layout_below="@+id/det7"
@@ -105,7 +106,7 @@
                 android:hint="Necesita di: " />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/det9"
                 android:layout_below="@+id/det8"
@@ -126,11 +127,79 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Defects"
-                android:id="@+id/defects"
+                android:id="@+id/defectsTitle"
                 android:layout_marginStart="82dp"
                 android:layout_above="@+id/plasticCheck"
                 android:layout_toEndOf="@+id/generalCondition" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignLeft="@+id/defectsTitle"
+                android:layout_below="@+id/defectsTitle"
+                android:id="@+id/defsContainer">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect1"
+                    android:text="defect 1"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect2"
+                    android:text="defect 2"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect3"
+                    android:text="defect 3"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect4"
+                    android:text="defect 4"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect5"
+                    android:text="defect 5"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect6"
+                    android:text="defect 6"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect7"
+                    android:text="defect 7"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect8"
+                    android:text="defect 8"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect9"
+                    android:text="defect 9"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect10"
+                    android:text="defect 10"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect11"
+                    android:text="defect 11"/>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/defect12"
+                    android:text="defect 12"/>
 
+            </LinearLayout>
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -139,7 +208,7 @@
                 android:id="@+id/crateNumber"
                 android:hint="Crate Number:"
                 android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/defects" />
+                android:layout_alignStart="@+id/defectsTitle" />
 
             <CheckBox
                 android:layout_width="wrap_content"
@@ -257,60 +326,7 @@
                 android:layout_below="@+id/specialCare"
                 android:layout_alignStart="@+id/specialCare" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Exit from museum"
-                android:id="@+id/textView4"
-                android:layout_alignBaseline="@+id/det8"
-                android:layout_alignBottom="@+id/det8"
-                android:layout_toStartOf="@+id/sideCheck" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="End of exhibition"
-                android:id="@+id/textView5"
-                android:layout_above="@+id/textView7"
-                android:layout_toEndOf="@+id/sideCheck" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Install in Exhibition"
-                android:id="@+id/textView6"
-                android:layout_below="@+id/textView4"
-                android:layout_alignEnd="@+id/textView4" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Return in museum"
-                android:id="@+id/textView7"
-                android:layout_alignTop="@+id/textView6"
-                android:layout_alignEnd="@+id/textView5" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Same Condition"
-                android:id="@+id/checkBox"
-                android:checked="false"
-                android:layout_below="@+id/det8"
-                android:layout_alignEnd="@+id/textView4" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Same Condition"
-                android:id="@+id/checkBox2"
-                android:checked="false"
-                android:layout_below="@+id/det8"
-                android:layout_toEndOf="@+id/tapeCheck" />
 
             <RadioGroup
                 android:layout_width="wrap_content"

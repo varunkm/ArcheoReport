@@ -1,9 +1,14 @@
 package team38.ucl.archeoreport.Models;
 
+import android.view.View;
+import android.widget.LinearLayout;
+
 import com.orm.SugarRecord;
 import com.orm.dsl.Table;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import team38.ucl.archeoreport.Models.Exhibition;
 
@@ -13,6 +18,8 @@ import team38.ucl.archeoreport.Models.Exhibition;
  */
 
 public class Report extends SugarRecord {
+
+
     Exhibition exhibition;
     String invNum;
     long date;
@@ -36,10 +43,9 @@ public class Report extends SugarRecord {
     boolean foamRubber;
     String position;
 
-    //TODO Generate PDF
     public Report(Exhibition exhibition, String invNum, Date date, String det1, String det2, String det3, String det4, String det5, String det6, String det7,
-                  String det8, String det9, String genCondition, String specialCare, String crateNumber,
-                  boolean supportF, boolean plastic, boolean paper, boolean noTape, boolean ethafoam, boolean foamRubber, String position) {
+                  String det8, String det9, String genCondition, String specialCare, String crateNumber, boolean supportF,
+                  boolean plastic, boolean paper, boolean noTape, boolean ethafoam, boolean foamRubber, String position) {
         this.exhibition = exhibition;
         this.invNum = invNum;
         this.date = date.getTime();
@@ -63,6 +69,9 @@ public class Report extends SugarRecord {
         this.foamRubber = foamRubber;
         this.position = position;
     }
+
+    //TODO Generate PDF
+
 
     public Report() {
     }
@@ -153,7 +162,52 @@ public class Report extends SugarRecord {
         return foamRubber;
     }
 
+
+    public String wrappingToString(){
+        String s = "";
+        if(paper)
+        {
+            s+="Paper: YES\n";
+        }
+        if(plastic){
+            s+="Plastic: YES\n";
+        }
+        if(!noTape){
+            s+="Tape: YES";
+        }
+        return s;
+    }
+
+    public String protectionToString(){
+        String s  = "";
+        if(ethafoam){
+            s+="Ethafoam: YES\n";
+        }
+        if(foamRubber){
+            s+="Foam rubber: YES\n";
+        }
+        return s;
+    }
     public String getPosition() {
         return position;
     }
+
+    public List<Detail> getDetailsAsList()
+    {
+        ArrayList<Detail> dets = new ArrayList<>();
+        dets.add(new Detail("Oggetto",det1));
+        dets.add(new Detail("Tecnica",det2));
+        dets.add(new Detail("Dimens",det3));
+        dets.add(new Detail("Datazione",det4));
+        dets.add(new Detail("Collocazione",det5));
+        dets.add(new Detail("Stato Conserv",det6));
+        dets.add(new Detail("Priorita",det7));
+        dets.add(new Detail("Necesita Di",det8));
+        dets.add(new Detail("Interventi Fatti",det9));
+        dets.add(new Detail("General Condition",genCondition));
+        dets.add(new Detail("Special Care",specialCare));
+        dets.add(new Detail("Crate Number",crateNumber));
+        return dets;
+    }
+
 }
