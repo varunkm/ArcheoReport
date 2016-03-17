@@ -111,6 +111,8 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
             TextView date = (TextView) view.findViewById(R.id.date);
             date.setText(currentExhibition.getDate().toString());
 
+            view.setBackgroundResource(R.drawable.rounded_corner);
+
             return view;
         }
 

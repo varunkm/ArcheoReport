@@ -12,6 +12,9 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/exhibitionlist">
+        android:id="@+id/exhibitionlist"
+        android:divider="@android:color/transparent"
+        android:listSelector="@drawable/listview_selector"
+        android:dividerHeight="10.0sp">
     </ListView>
 </RelativeLayout>

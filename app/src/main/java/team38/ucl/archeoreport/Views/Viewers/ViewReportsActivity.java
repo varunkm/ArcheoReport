@@ -1,12 +1,14 @@
 package team38.ucl.archeoreport.Views.Viewers;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,9 +27,11 @@ public class ViewReportsActivity extends AppCompatActivity {
     private Exhibition exContext;
     private ReportListAdapter repsAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
         //TODO Implement image adding
@@ -90,7 +94,8 @@ public class ViewReportsActivity extends AppCompatActivity {
 
         //adding an element to our list
         @Override
-        public View getView(int position, View view, ViewGroup parent){
+        public View getView(int position, View view, ViewGroup parent){;
+
             if(view == null)
                 view = getLayoutInflater().inflate(R.layout.report_list_item, parent, false);
 
@@ -101,6 +106,8 @@ public class ViewReportsActivity extends AppCompatActivity {
 
             TextView date = (TextView) view.findViewById(R.id.date);
             date.setText(curRep.getDate().toString());
+
+            view.setBackgroundResource(R.drawable.rounded_corner);
 
             return view;
         }
