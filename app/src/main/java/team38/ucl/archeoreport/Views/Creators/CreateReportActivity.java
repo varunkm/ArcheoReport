@@ -349,6 +349,7 @@ public class CreateReportActivity extends AppCompatActivity {
                             Intent myIntent = new Intent(CreateReportActivity.this, AnnotateActivity.class);
                             myIntent.putExtra("nrInv", nrInv); //Optional parameters
                             myIntent.putExtra("imageURI", imageUri);
+                            myIntent.putExtra("Exhibition",ExhibitionContext.getId().toString());
                             CreateReportActivity.this.startActivity(myIntent);
                             break;
 

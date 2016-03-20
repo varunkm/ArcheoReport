@@ -8,16 +8,18 @@ import java.util.ArrayList;
  * Created by varunmathur on 20/03/16.
  */
 public class AnnotatedImage extends SugarRecord {
-    private String path;
-    private String nrInv;
+    Exhibition ex;
+    String path;
+    String nrInv;
 
     public AnnotatedImage(){
 
     }
 
-    public AnnotatedImage(String path, String nrInv) {
+    public AnnotatedImage(String path, String nrInv, Exhibition ex) {
         this.path = path;
         this.nrInv = nrInv;
+        this.ex = ex;
     }
 
     public String getPath() {

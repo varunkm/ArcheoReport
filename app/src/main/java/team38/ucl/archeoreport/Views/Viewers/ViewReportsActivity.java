@@ -58,6 +58,18 @@ public class ViewReportsActivity extends AppCompatActivity {
                 //TODO: Handle onResume,
             }
         });
+
+        FloatingActionButton fab2 = (FloatingActionButton)findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ViewReportsActivity.this, GalleryActivity.class);
+
+
+                startActivity(intent);
+                //TODO: Handle onResume,
+            }
+        });
     }
 
 

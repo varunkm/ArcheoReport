@@ -42,6 +42,7 @@ import team38.ucl.archeoreport.AnnotationView;
 import team38.ucl.archeoreport.Models.AnnotatedImage;
 import team38.ucl.archeoreport.Models.Annotation;
 import team38.ucl.archeoreport.Models.Defect;
+import team38.ucl.archeoreport.Models.Exhibition;
 import team38.ucl.archeoreport.R;
 
 public class AnnotateActivity extends AppCompatActivity implements OnItemSelectedListener {
@@ -50,6 +51,7 @@ public class AnnotateActivity extends AppCompatActivity implements OnItemSelecte
     public Spinner defSpin;
     public Spinner sizeSpin;
     public AnnotationView v;
+    Exhibition exhibitionContext;
     public final String IMAGE_PATH_HEAD = "/ArcheoReport/images/";
     private Uri initialUri;
     private String nrInv;
@@ -62,7 +64,8 @@ public class AnnotateActivity extends AppCompatActivity implements OnItemSelecte
         Intent callingIntent = getIntent();
         initialUri = callingIntent.getParcelableExtra("imageURI");
         nrInv= callingIntent.getStringExtra("nrInv");
-
+        String ex_ID = callingIntent.getStringExtra("Exhibition");
+        exhibitionContext = Exhibition.findById(Exhibition.class,Long.parseLong(ex_ID));
 
         try {
             Bitmap unannotated = MediaStore.Images.Media.getBitmap(getContentResolver(), initialUri);
@@ -139,7 +142,7 @@ public class AnnotateActivity extends AppCompatActivity implements OnItemSelecte
                             storageDir      /* directory */
                     );
             b.compress(Bitmap.CompressFormat.PNG,100,new FileOutputStream(image));
-            AnnotatedImage anImage = new AnnotatedImage(image.getPath(),nrInv);
+            AnnotatedImage anImage = new AnnotatedImage(image.getPath(),nrInv,exhibitionContext);
             anImage.save();
             ArrayList<String> defs = view.getDefects();
             for (String s : defs){
