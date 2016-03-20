@@ -23,4 +23,8 @@ public class Defect
         else
             return "";
     }
+
+    public boolean equals(Defect other){
+        return this.toString().equals(other.toString());
+    }
 }

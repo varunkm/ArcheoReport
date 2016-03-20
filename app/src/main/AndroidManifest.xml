@@ -10,29 +10,34 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+        android:name="com.orm.SugarApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.orm.SugarApp"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
-
-        <meta-data android:name="DATABASE" android:value="archeoreport.db" />
-        <meta-data android:name="VERSION" android:value="2" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="team38.ucl.archeoreport" />
+        android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="DATABASE"
+            android:value="archeoreport.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="2" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="team38.ucl.archeoreport" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Views.Viewers.AnnotateActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
-
         </activity>
         <activity
             android:name=".Views.Viewers.ViewExhibitionsActivity"
-            android:label="@string/title_activity_view_exhibitions"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="ArcheoReport"
+            android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,6 +57,11 @@
         <activity
             android:name=".Views.Creators.CreateReportActivity"
             android:label="@string/title_activity_create_report"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".Views.Viewers.GalleryActivity"
+            android:label="@string/title_activity_gallery"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

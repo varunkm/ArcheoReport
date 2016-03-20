@@ -26,6 +26,7 @@
     <string name="title_activity_view_reports">ViewReportsActivity</string>
     <string name="ViewReportsTitle">Reports</string>
     <string name="title_activity_create_report">CreateReportActivity</string>
+    <string name="title_activity_gallery">GalleryActivity</string>
 
 
 </resources>

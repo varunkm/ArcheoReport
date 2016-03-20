@@ -3,6 +3,7 @@ package team38.ucl.archeoreport.Views.Creators;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,11 +12,14 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfRenderer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -50,9 +55,14 @@ import team38.ucl.archeoreport.Models.Detail;
 import team38.ucl.archeoreport.Models.Exhibition;
 import team38.ucl.archeoreport.Models.Report;
 import team38.ucl.archeoreport.R;
+import team38.ucl.archeoreport.Views.Viewers.AnnotateActivity;
 
 public class CreateReportActivity extends AppCompatActivity {
     private Exhibition ExhibitionContext;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int PICKFILE_RESULT_CODE = 2;
+    private Uri currentImgUri;
+    private int imageCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +77,7 @@ public class CreateReportActivity extends AppCompatActivity {
         LinearLayout defContainer = (LinearLayout) findViewById(R.id.defsContainer);
         int count = defContainer.getChildCount();
         String[] names = getResources().getStringArray(R.array.defect_choices);
-        for(int i = 0; i < count; i++)
+        for(int i = 1; i < count; i++)
         {
             CheckBox v = (CheckBox)defContainer.getChildAt(i);
             v.setText(names[i]);
@@ -82,21 +92,47 @@ public class CreateReportActivity extends AppCompatActivity {
                 finish();
             }
         });
+        Button addFromDevice = (Button)findViewById(R.id.addDeviceBttn);
+        Button addFromCamera = (Button)findViewById(R.id.launchCameraBttn);
+
+        addFromCamera.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 String nrInv = ((EditText) (findViewById(R.id.nrInv))).getText().toString();
+                 if (!nrInv.matches("")) {
+                     dispatchTakePictureIntent();
+                 } else {
+                     Toast.makeText(getApplicationContext(), "Please fill out report completely", Toast.LENGTH_SHORT).show();
+                 }
+             }
+         }
+        );
+        addFromDevice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nrInv = ((EditText) (findViewById(R.id.nrInv))).getText().toString();
+                if (!nrInv.matches("")) {
+                    dispatchGetFromFileIntent();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please fill out report completely", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private Report genNewReport() {
-        boolean def1 = false;
-        boolean def2 = false;
-        boolean def3 = false;
-        boolean def4 = false;
-        boolean def5 = false;
-        boolean def6 = false;
-        boolean def7 = false;
-        boolean def8 = false;
-        boolean def9 = false;
-        boolean def10 = false;
-        boolean def11 = false;
-        boolean def12 = false;
+        boolean def1;
+        boolean def2;
+        boolean def3;
+        boolean def4;
+        boolean def5;
+        boolean def6;
+        boolean def7;
+        boolean def8;
+        boolean def9;
+        boolean def10;
+        boolean def11;
+        boolean def12;
 
         String nrInv = ((EditText) (findViewById(R.id.nrInv))).getText().toString();
         String det1_et = ((EditText) (findViewById(R.id.det1))).getText().toString();
@@ -143,30 +179,31 @@ public class CreateReportActivity extends AppCompatActivity {
 
         LinearLayout defContainer = (LinearLayout) findViewById(R.id.defsContainer);
         int count = defContainer.getChildCount();
+        int start = 1;
         CheckBox v = null;
-        v = (CheckBox) defContainer.getChildAt(0);
+        v = (CheckBox) defContainer.getChildAt(start);
         def1 = v.isChecked();
-        v = (CheckBox) defContainer.getChildAt(1);
+        v = (CheckBox) defContainer.getChildAt(start+1);
         def2 = v.isChecked();
-        v = (CheckBox) defContainer.getChildAt(2);
+        v = (CheckBox) defContainer.getChildAt(start+2);
         def3 = v.isChecked();
-        v = (CheckBox) defContainer.getChildAt(3);
+        v = (CheckBox) defContainer.getChildAt(start+3);
         def4 = v.isChecked();
-        v = (CheckBox) defContainer.getChildAt(4);
+        v = (CheckBox) defContainer.getChildAt(start+4);
         def5 = v.isChecked();
-        v = (CheckBox) defContainer.getChildAt(5);
+        v = (CheckBox) defContainer.getChildAt(start+5);
         def6 = v.isChecked();
-        v = (CheckBox) defContainer.getChildAt(6);
+        v = (CheckBox) defContainer.getChildAt(start+6);
         def7 = v.isChecked();
-        v = (CheckBox) defContainer.getChildAt(7);
+        v = (CheckBox) defContainer.getChildAt(start+7);
         def8 = v.isChecked();
-        v = (CheckBox) defContainer.getChildAt(8);
+        v = (CheckBox) defContainer.getChildAt(start+8);
         def9 = v.isChecked();
-        v = (CheckBox) defContainer.getChildAt(9);
+        v = (CheckBox) defContainer.getChildAt(start+9);
         def10 = v.isChecked();
-        v = (CheckBox) defContainer.getChildAt(10);
+        v = (CheckBox) defContainer.getChildAt(start+10);
         def11 = v.isChecked();
-        v = (CheckBox) defContainer.getChildAt(11);
+        v = (CheckBox) defContainer.getChildAt(start+11);
         def12 = v.isChecked();
 
 
@@ -255,6 +292,98 @@ public class CreateReportActivity extends AppCompatActivity {
     }
 
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+                currentImgUri = Uri.fromFile(photoFile);
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                ex.printStackTrace();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+    private void dispatchGetFromFileIntent(){
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICKFILE_RESULT_CODE);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri unannotated = currentImgUri;
+        if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            unannotated  = data.getData();
+
+            }
+
+        else if((requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK && data != null && data.getData() != null)){
+            unannotated = currentImgUri;
+        }
+        /*
+        initialUri = callingIntent.getParcelableExtra("imageURI");
+        nrInv= callingIntent.getStringExtra("nrInv");
+         */
+        final Uri imageUri = unannotated;
+        if(imageUri != null) {
+
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            String nrInv = ((EditText) (findViewById(R.id.nrInv))).getText().toString();
+
+                            Intent myIntent = new Intent(CreateReportActivity.this, AnnotateActivity.class);
+                            myIntent.putExtra("nrInv", nrInv); //Optional parameters
+                            myIntent.putExtra("imageURI", imageUri);
+                            CreateReportActivity.this.startActivity(myIntent);
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            //No button clicked
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Annotate Photo?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String nrInv = ((EditText) (findViewById(R.id.nrInv))).getText().toString();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = nrInv + timeStamp + "_unannotated";
+        String root = Environment.getExternalStorageDirectory().toString();
+        File storageDir = new File(root+"/ArcheoReport/Images/"+nrInv);
+        storageDir.mkdirs();
+        File image = File.createTempFile
+        (
+                imageFileName,  /* prefix */
+                ".png",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        return image;
+    }
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -262,7 +391,6 @@ public class CreateReportActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
-
     /**
      * Checks if the app has permission to write to device storage
      *
