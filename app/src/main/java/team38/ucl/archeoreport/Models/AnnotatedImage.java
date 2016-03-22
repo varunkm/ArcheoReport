@@ -8,6 +8,10 @@ import java.util.ArrayList;
  * Created by varunmathur on 20/03/16.
  */
 public class AnnotatedImage extends SugarRecord {
+    public Exhibition getEx() {
+        return ex;
+    }
+
     Exhibition ex;
     String path;
     String nrInv;
@@ -34,11 +38,19 @@ public class AnnotatedImage extends SugarRecord {
         return (ArrayList)Annotation.find(Annotation.class, "image = ?", this.getId().toString());
     }
 
-    public ArrayList<Defect> getDefects(){
-        ArrayList<Defect> defects = new ArrayList<>();
+    public ArrayList<String> getDefects(){
+        ArrayList<String> defects = new ArrayList<>();
         for(Annotation a : getAnnotations()){
-            defects.add(a.getDefect());
+            if(a.getDefect()!=null)
+                defects.add(a.getDefect());
         }
         return defects;
+    }
+
+    public boolean equals(AnnotatedImage other){
+        boolean exhib = ex.equals(other.ex);
+        boolean p = path.equals(other.getPath());
+        boolean inv = nrInv.equals(other.getNrInv());
+        return exhib && p && inv;
     }
 }

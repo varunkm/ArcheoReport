@@ -146,7 +146,7 @@ public class AnnotateActivity extends AppCompatActivity implements OnItemSelecte
             anImage.save();
             ArrayList<String> defs = view.getDefects();
             for (String s : defs){
-                Annotation a = new Annotation(new Defect(s,true),anImage);
+                Annotation a = new Annotation(s,anImage);
                 a.save();
             }
         } catch (IOException e) {

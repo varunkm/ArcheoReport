@@ -6,26 +6,20 @@ import com.orm.SugarRecord;
  * Created by varunmathur on 20/03/16.
  */
 public class Annotation extends SugarRecord {
-    Defect defect;
+    String defect;
     AnnotatedImage image;
 
     public Annotation(){
 
     }
 
-    public void setImage(AnnotatedImage image) {
-        this.image = image;
-    }
 
-    public Annotation(Defect defect){
-        this.defect = defect;
-    }
-    public Annotation(Defect defect, AnnotatedImage image) {
+    public Annotation(String defect, AnnotatedImage image) {
         this.defect = defect;
         this.image = image;
     }
 
-    public Defect getDefect() {
+    public String getDefect() {
         return defect;
     }
 

@@ -43,6 +43,8 @@ public class Report extends SugarRecord {
     boolean foamRubber;
     String position;
 
+    String pdfpath;
+
     public Report(Exhibition exhibition, String invNum, Date date, String det1, String det2, String det3, String det4, String det5, String det6, String det7,
                   String det8, String det9, String genCondition, String specialCare, String crateNumber, boolean supportF,
                   boolean plastic, boolean paper, boolean noTape, boolean ethafoam, boolean foamRubber, String position) {
@@ -162,6 +164,13 @@ public class Report extends SugarRecord {
         return foamRubber;
     }
 
+    public String getPdfpath(){
+        return pdfpath;
+    }
+
+    public void setPdfpath(String pdfpath){
+        this.pdfpath= pdfpath;
+    }
 
     public String wrappingToString(){
         String s = "";

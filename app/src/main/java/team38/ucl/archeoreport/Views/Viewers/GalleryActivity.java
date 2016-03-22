@@ -23,6 +23,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import team38.ucl.archeoreport.Models.AnnotatedImage;
 import team38.ucl.archeoreport.Models.Defect;
@@ -76,18 +77,28 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
         repSpinner.setAdapter(repAdapt);
         defSpinner.setAdapter(defAdapt);
 
+        exSpinner.setOnItemSelectedListener(this);
+        repSpinner.setOnItemSelectedListener(this);
+        defSpinner.setOnItemSelectedListener(this);
+
+
+
     }
 
     public void onItemSelected(AdapterView<?> parent,View view, int pos, long id){
+        Log.i("FILTER", "itemSelected");
         switch (parent.getId()){
             case R.id.exhibFilter:
                 currentExhibition = (String) parent.getItemAtPosition(pos);
+                Log.i("FILTER", "exhib");
                 break;
             case R.id.reportFilter:
                 currentInvNum = (String) parent.getItemAtPosition(pos);
+                Log.i("FILTER", "report");
                 break;
             case R.id.defectFilter:
                 currentDefect = (String) parent.getItemAtPosition(pos);
+                Log.i("FILTER", "defect");
                 break;
         }
         reloadGallery();
@@ -99,24 +110,49 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
 
     private void reloadGallery(){
         ArrayList<AnnotatedImage> images = (ArrayList)AnnotatedImage.listAll(AnnotatedImage.class);
+        Log.i("RELOAD GALLERY BEFORE", ""+images.size());
+        Log.i("RELOAD GALLERY", "curEx"+currentExhibition);
+        Log.i("RELOAD GALLERY", "curRep"+currentInvNum);
+        Log.i("RELOAD GALLERY", "curDefect"+currentDefect);
+
         if(currentExhibition != null) {
             Exhibition ex = Exhibition.find(Exhibition.class, "name = ?", currentExhibition).get(0);
-            images.retainAll((ArrayList) AnnotatedImage.find(AnnotatedImage.class,"ex = ?",ex.getId().toString()));
+            Iterator i = images.iterator();
+            while(i.hasNext()){
+                AnnotatedImage x = (AnnotatedImage)i.next();
+                if(!(x.getEx().getId() == ex.getId())){
+                    i.remove();
+                }
+            }
+
         }
+        Log.i("AFTER EXHIBITION", ""+images.size());
+
         if(currentInvNum!=null){
-            images.retainAll((ArrayList) AnnotatedImage.find(AnnotatedImage.class,"nrInv = ?",currentInvNum));
-        }
-        if(currentDefect != null && !currentDefect.equals("General")) {
-            Defect defect = new Defect(currentDefect, true);
-            for (AnnotatedImage a : images) {
-                if (!(a.getDefects().contains(defect))) {
-                    images.remove(a);
+            Iterator i = images.iterator();
+            while(i.hasNext()){
+                AnnotatedImage x = (AnnotatedImage)i.next();
+                Log.i("InvNums: ", x.getNrInv()+", "+currentInvNum);
+                if(!(x.getNrInv().equals(currentInvNum))){
+                    i.remove();
                 }
             }
         }
+        Log.i("AFTER REPORT", ""+images.size());
 
-        galleryAdapter.clear();
-        galleryAdapter.addAll(images);
+        if(currentDefect != null && !currentDefect.equals("General")) {
+            String defect = currentDefect;
+            Iterator i = images.iterator();
+            while(i.hasNext()){
+                AnnotatedImage x = (AnnotatedImage)i.next();
+                Log.i("DEFECTS ITEM", x.getDefects().size()+"");
+                if(!(x.getDefects().contains(defect))){
+                    i.remove();
+                }
+            }
+        }
+        Log.i("RELOAD GALLERY AFTER", ""+images.size());
+        galleryAdapter = new GalleryAdapter(this,R.layout.image_in_gallery,images);
         GridView galleryView = (GridView)findViewById(R.id.gallery);
         galleryView.setAdapter(galleryAdapter);
         galleryAdapter.notifyDataSetChanged();

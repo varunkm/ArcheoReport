@@ -280,6 +280,8 @@ public class CreateReportActivity extends AppCompatActivity {
             File docfile = new File(root,name+".pdf");
             FileOutputStream pdfos = new FileOutputStream(docfile);
             document.writeTo(pdfos);
+            rep.setPdfpath(docfile.getAbsolutePath());
+            rep.save();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

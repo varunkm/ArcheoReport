@@ -1,16 +1,20 @@
 package team38.ucl.archeoreport.Views.Viewers;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +32,9 @@ public class ViewReportsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         //TODO Implement image adding
 
         setContentView(R.layout.activity_view_reports);
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -45,8 +46,23 @@ public class ViewReportsActivity extends AppCompatActivity {
 
         reports = Report.find(Report.class, "Exhibition = ?", exContext.getId().toString());
         ListView reportslst = (ListView)findViewById(R.id.reportslist);
+
         repsAdapter = new ReportListAdapter();
         reportslst.setAdapter(new ReportListAdapter());
+
+        reportslst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+                Report item = (Report) adapter.getItemAtPosition(position);
+                File file = new File(item.getPdfpath());
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent);
+            }
+
+        });
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +131,10 @@ public class ViewReportsActivity extends AppCompatActivity {
             date.setText(curRep.getDate().toString());
 
             return view;
+        }
+
+        public Report getItem(int position){
+            return reports.get(position);
         }
     }
 
