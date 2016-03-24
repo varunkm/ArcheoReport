@@ -18,6 +18,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import team38.ucl.archeoreport.Models.AnnotatedImage;
+import team38.ucl.archeoreport.Models.Annotation;
+
 /**
  * Created by varunmathur on 06/03/16.
  */
@@ -38,6 +41,9 @@ public class AnnotationView extends View {
     private ArrayList<String> defects= new ArrayList<String>();
     private String currentDefect;
     private String invNum;
+
+    AnnotatedImage anImage;
+    ArrayList<Annotation> annotations;
 
 
     public AnnotationView(Context context, AttributeSet attrs)

@@ -7,11 +7,15 @@ import com.orm.SugarRecord;
  */
 public class Defect
 {
+    public String getTitle() {
+        return title;
+    }
+
     String title;
     boolean present;
 
-    public Defect(String defect, boolean present) {
-        this.title = defect;
+    public Defect(String title, boolean present) {
+        this.title = title;
         this.present = present;
     }
 
@@ -22,5 +26,9 @@ public class Defect
         }
         else
             return "";
+    }
+
+    public boolean equals(Defect other){
+        return this.toString().equals(other.toString());
     }
 }

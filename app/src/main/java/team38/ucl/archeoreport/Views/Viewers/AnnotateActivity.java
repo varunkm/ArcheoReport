@@ -1,10 +1,12 @@
-package team38.ucl.archeoreport;
+package team38.ucl.archeoreport.Views.Viewers;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,35 +28,53 @@ import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity implements OnItemSelectedListener {
+import team38.ucl.archeoreport.AnnotationView;
+import team38.ucl.archeoreport.Models.AnnotatedImage;
+import team38.ucl.archeoreport.Models.Annotation;
+import team38.ucl.archeoreport.Models.Defect;
+import team38.ucl.archeoreport.Models.Exhibition;
+import team38.ucl.archeoreport.R;
+
+public class AnnotateActivity extends AppCompatActivity implements OnItemSelectedListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public Spinner colSpin;
     public Spinner defSpin;
     public Spinner sizeSpin;
     public AnnotationView v;
-    public final String IMAGE_PATH_HEAD = getString(R.string.imagepath);
+    Exhibition exhibitionContext;
+    public final String IMAGE_PATH_HEAD = "/ArcheoReport/images/";
+    private Uri initialUri;
+    private String nrInv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Intent callingIntent = getIntent();
+        initialUri = callingIntent.getParcelableExtra("imageURI");
+        nrInv= callingIntent.getStringExtra("nrInv");
+        String ex_ID = callingIntent.getStringExtra("Exhibition");
+        exhibitionContext = Exhibition.findById(Exhibition.class,Long.parseLong(ex_ID));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dispatchTakePictureIntent();
-            }
-        });
+        try {
+            Bitmap unannotated = MediaStore.Images.Media.getBitmap(getContentResolver(), initialUri);
+            v = (AnnotationView)findViewById(R.id.annotation);
+            v.setBgimg(unannotated);
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         colSpin = (Spinner)findViewById(R.id.colorspinner);
         defSpin = (Spinner)findViewById(R.id.defspinner);
         sizeSpin = (Spinner)findViewById(R.id.pensizespin);
@@ -99,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements OnItemSelectedLis
             public void onClick(View view) {
                 v = (AnnotationView) findViewById(R.id.annotation);
                 saveAnnotatedImage(v);
+                finish();
             }
         });
 
@@ -108,36 +129,32 @@ public class MainActivity extends AppCompatActivity implements OnItemSelectedLis
     {
         view.setDrawingCacheEnabled(true);
         Bitmap b = view.getDrawingCache();
-        String invnum = view.getInvNum();
-
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        Date now = Calendar.getInstance().getTime();
-        String imgPath = IMAGE_PATH_HEAD+invnum+"/"+df.format(now);
+        String root = Environment.getExternalStorageDirectory().toString();
+        File storageDir = new File(root+"/ArcheoReport/Images/"+nrInv);
+        storageDir.mkdirs();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = nrInv + timeStamp + "_annotated";
         try {
-            b.compress(Bitmap.CompressFormat.PNG,100,new FileOutputStream(imgPath));
-        } catch (FileNotFoundException e) {
+            File image = File.createTempFile
+                    (
+                            imageFileName,  /* prefix */
+                            ".png",         /* suffix */
+                            storageDir      /* directory */
+                    );
+            b.compress(Bitmap.CompressFormat.PNG,100,new FileOutputStream(image));
+            AnnotatedImage anImage = new AnnotatedImage(image.getPath(),nrInv,exhibitionContext);
+            anImage.save();
+            ArrayList<String> defs = view.getDefects();
+            for (String s : defs){
+                Annotation a = new Annotation(s,anImage);
+                a.save();
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        SQLiteDatabase myDB  = openOrCreateDatabase("ArcheoReport",MODE_PRIVATE,null);
-        myDB.execSQL("CREATE TABLE IF NOT EXISTS Images(invNum VARCHAR, Path VARCHAR, Defects VARCHAR);");
-
 
     }
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            v = (AnnotationView)findViewById(R.id.annotation);
-            v.setBgimg(imageBitmap);
-        }
-    }
+
 
 
     public void onItemSelected(AdapterView<?> parent, View view,
