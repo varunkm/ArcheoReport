@@ -2,6 +2,8 @@ package team38.ucl.archeoreport.Views.Viewers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -48,6 +50,17 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
         GridView galleryView = (GridView)findViewById(R.id.gallery);
         galleryView.setAdapter(galleryAdapter);
         galleryAdapter.notifyDataSetChanged();
+
+        galleryView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AnnotatedImage selected= (AnnotatedImage)parent.getItemAtPosition(position);
+                Intent intent = new Intent();
+                intent.setAction(android.content.Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.fromFile(new File(selected.getPath())), "image/png");
+                startActivity(intent);
+            }
+        });
 
         Spinner exSpinner = (Spinner)findViewById(R.id.exhibFilter);
         Spinner repSpinner = (Spinner)findViewById(R.id.reportFilter);

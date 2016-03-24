@@ -21,12 +21,13 @@
         <item>Spots/Stains</item>
         <item>General</item>
     </string-array>
-    <string name="title_activity_view_exhibitions">ViewExhibitionsActivity</string>
-    <string name="title_activity_add_exhibition_activity">AddExhibitionACtivity</string>
-    <string name="title_activity_view_reports">ViewReportsActivity</string>
+    <string name="title_activity_view_exhibitions">Exhibitions</string>
+    <string name="title_activity_add_exhibition_activity">Create Exhibition...</string>
+    <string name="title_activity_view_reports">Reports</string>
     <string name="ViewReportsTitle">Reports</string>
-    <string name="title_activity_create_report">CreateReportActivity</string>
-    <string name="title_activity_gallery">GalleryActivity</string>
+    <string name="ViewExhibitionTitle">Exhibitions</string>
+    <string name="title_activity_create_report">Create Report...</string>
+    <string name="title_activity_gallery">Images</string>
 
 
 </resources>
