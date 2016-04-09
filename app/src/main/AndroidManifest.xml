@@ -64,6 +64,11 @@
             android:label="@string/title_activity_gallery"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".Models.AddCSVFileActivity"
+            android:label="@string/title_activity_add_csvfile"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

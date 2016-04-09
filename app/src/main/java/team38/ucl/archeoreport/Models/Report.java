@@ -1,16 +1,10 @@
 package team38.ucl.archeoreport.Models;
 
-import android.view.View;
-import android.widget.LinearLayout;
-
 import com.orm.SugarRecord;
-import com.orm.dsl.Table;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import team38.ucl.archeoreport.Models.Exhibition;
 
 /**
  * Created by varunmathur on 11/03/16.
@@ -30,8 +24,7 @@ public class Report extends SugarRecord {
     String det5;
     String det6;
     String det7;
-    String det8;
-    String det9;
+    String defects;
     String genCondition;
     String specialCare;
     String crateNumber;
@@ -42,12 +35,10 @@ public class Report extends SugarRecord {
     boolean ethafoam;
     boolean foamRubber;
     String position;
-
     String pdfpath;
 
-    public Report(Exhibition exhibition, String invNum, Date date, String det1, String det2, String det3, String det4, String det5, String det6, String det7,
-                  String det8, String det9, String genCondition, String specialCare, String crateNumber, boolean supportF,
-                  boolean plastic, boolean paper, boolean noTape, boolean ethafoam, boolean foamRubber, String position) {
+    public Report(Exhibition exhibition, String invNum, Date date, String det1, String det2, String det3, String det4, String det5, String det6, String det7, String genCondition, String specialCare, String crateNumber, boolean supportF,
+                  boolean plastic, boolean paper, boolean noTape, boolean ethafoam, boolean foamRubber, String position, String defects) {
         this.exhibition = exhibition;
         this.invNum = invNum;
         this.date = date.getTime();
@@ -58,8 +49,6 @@ public class Report extends SugarRecord {
         this.det5 = det5;
         this.det6 = det6;
         this.det7 = det7;
-        this.det8 = det8;
-        this.det9 = det9;
         this.genCondition = genCondition;
         this.specialCare = specialCare;
         this.crateNumber = crateNumber;
@@ -69,6 +58,7 @@ public class Report extends SugarRecord {
         this.noTape = noTape;
         this.ethafoam = ethafoam;
         this.foamRubber = foamRubber;
+        this.defects = defects;
         this.position = position;
     }
 
@@ -120,13 +110,6 @@ public class Report extends SugarRecord {
         return det7;
     }
 
-    public String getDet8() {
-        return det8;
-    }
-
-    public String getDet9() {
-        return det9;
-    }
 
     public String getGenCondition() {
         return genCondition;
@@ -172,6 +155,10 @@ public class Report extends SugarRecord {
         this.pdfpath= pdfpath;
     }
 
+    public ArrayList<String> getDefectsAsListofStrings(){
+        return DBListHelper.stringToList(this.defects);
+    }
+
     public String wrappingToString(){
         String s = "";
         if(paper)
@@ -203,16 +190,15 @@ public class Report extends SugarRecord {
 
     public List<Detail> getDetailsAsList()
     {
+
         ArrayList<Detail> dets = new ArrayList<>();
         dets.add(new Detail("Oggetto",det1));
         dets.add(new Detail("Tecnica",det2));
         dets.add(new Detail("Dimens",det3));
         dets.add(new Detail("Datazione",det4));
-        dets.add(new Detail("Collocazione",det5));
+        dets.add(new Detail("Collacazione",det5));
         dets.add(new Detail("Stato Conserv",det6));
-        dets.add(new Detail("Priorita",det7));
-        dets.add(new Detail("Necesita Di",det8));
-        dets.add(new Detail("Interventi Fatti",det9));
+        dets.add(new Detail("Interventi Fatti",det7));
         dets.add(new Detail("General Condition",genCondition));
         dets.add(new Detail("Special Care",specialCare));
         dets.add(new Detail("Crate Number",crateNumber));

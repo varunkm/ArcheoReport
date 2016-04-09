@@ -7,6 +7,7 @@
     <string name="imagepath">/ArcheoReport/images/</string>
 
     <string-array name="defect_choices">
+        <item>General</item>
         <item>Lifting</item>
         <item>Fissures</item>
         <item>Losses</item>
@@ -19,8 +20,34 @@
         <item>Oxidations</item>
         <item>Dirt</item>
         <item>Spots/Stains</item>
-        <item>General</item>
     </string-array>
+
+    <string-array name="defects_report">
+        <item>Lifting</item>
+        <item>Fissures</item>
+        <item>Losses</item>
+        <item>Holes</item>
+        <item>Abrasions</item>
+        <item>Scratches</item>
+        <item>Incrustations</item>
+        <item>Cracks</item>
+        <item>Craqueleres</item>
+        <item>Oxidations</item>
+        <item>Dirt</item>
+        <item>Spots/Stains</item>
+    </string-array>
+
+    <string name="det1">Oggetto</string>
+    <string name="det2">Tecnica</string>
+    <string name="det3">Dimens</string>
+    <string name="det4">Datazione</string>
+    <string name="det5">Collacazione</string>
+    <string name="det6">Stato Conserv</string>
+    <string name="det7">Interventi Fatti</string>
+    <string name="det8">General Condition</string>
+    <string name="det9">Special Care</string>
+    <string name="det10">Crate Number</string>string>
+
     <string name="title_activity_view_exhibitions">Exhibitions</string>
     <string name="title_activity_add_exhibition_activity">Create Exhibition...</string>
     <string name="title_activity_view_reports">Reports</string>
@@ -28,6 +55,7 @@
     <string name="ViewExhibitionTitle">Exhibitions</string>
     <string name="title_activity_create_report">Create Report...</string>
     <string name="title_activity_gallery">Images</string>
+    <string name="title_activity_add_csvfile">Add a CSV File...</string>
 
 
 </resources>

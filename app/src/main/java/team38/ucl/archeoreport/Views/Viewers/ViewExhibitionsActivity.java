@@ -6,6 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,9 +16,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import team38.ucl.archeoreport.Models.AddCSVFileActivity;
 import team38.ucl.archeoreport.Models.Exhibition;
 import team38.ucl.archeoreport.R;
 import team38.ucl.archeoreport.Views.Creators.AddExhibitionActivity;
@@ -34,6 +37,8 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle("Exhibitions");
         //END BOILERPLATE
+
+
 
         //Initialise collection, ListView and adapter:
         exhibitions = Exhibition.listAll(Exhibition.class);
@@ -80,7 +85,30 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
         exAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_exhibition, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_importcsv:
+                Intent intent = new Intent(this, AddCSVFileActivity.class);
+                startActivity(intent);
 
+            case R.id.action_settings:
+
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();

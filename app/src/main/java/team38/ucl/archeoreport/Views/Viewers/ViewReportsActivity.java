@@ -1,6 +1,5 @@
 package team38.ucl.archeoreport.Views.Viewers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import team38.ucl.archeoreport.Models.Exhibition;

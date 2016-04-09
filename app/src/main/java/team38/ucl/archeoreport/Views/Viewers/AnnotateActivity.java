@@ -1,47 +1,33 @@
 package team38.ucl.archeoreport.Views.Viewers;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import team38.ucl.archeoreport.AnnotationView;
 import team38.ucl.archeoreport.Models.AnnotatedImage;
-import team38.ucl.archeoreport.Models.Annotation;
-import team38.ucl.archeoreport.Models.Defect;
 import team38.ucl.archeoreport.Models.Exhibition;
 import team38.ucl.archeoreport.R;
 
@@ -55,6 +41,7 @@ public class AnnotateActivity extends AppCompatActivity implements OnItemSelecte
     public final String IMAGE_PATH_HEAD = "/ArcheoReport/images/";
     private Uri initialUri;
     private String nrInv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,13 +129,8 @@ public class AnnotateActivity extends AppCompatActivity implements OnItemSelecte
                             storageDir      /* directory */
                     );
             b.compress(Bitmap.CompressFormat.PNG,100,new FileOutputStream(image));
-            AnnotatedImage anImage = new AnnotatedImage(image.getPath(),nrInv,exhibitionContext);
+            AnnotatedImage anImage = new AnnotatedImage(image.getPath(),nrInv,exhibitionContext,view.getDefects());
             anImage.save();
-            ArrayList<String> defs = view.getDefects();
-            for (String s : defs){
-                Annotation a = new Annotation(s,anImage);
-                a.save();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }

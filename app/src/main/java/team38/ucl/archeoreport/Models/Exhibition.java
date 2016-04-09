@@ -1,8 +1,7 @@
 package team38.ucl.archeoreport.Models;
 
-import com.orm.dsl.Table;
 import com.orm.SugarRecord;
-import java.io.Serializable;
+
 import java.util.Date;
 
 /**

@@ -1,0 +1,11 @@
+
+
+** TODO Fix create report layout being cut off
+** TODO Exhibition start and end date
+** TODO Link report defects to annotated images
+** TODO Persist text prompts in report creation screen
+** TODO Remove priorita and necessita di
+** TODO Fix PDF Generation, make reports more detailed and better looking
+** TODO Consolidate models, store defects as text
+** TODO Move hardcoded strings to strings.xml
+** TODO Fix spelling errors

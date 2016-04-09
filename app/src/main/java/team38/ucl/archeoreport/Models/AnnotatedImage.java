@@ -15,15 +15,16 @@ public class AnnotatedImage extends SugarRecord {
     Exhibition ex;
     String path;
     String nrInv;
-
+    String defects;
     public AnnotatedImage(){
 
     }
 
-    public AnnotatedImage(String path, String nrInv, Exhibition ex) {
+    public AnnotatedImage(String path, String nrInv, Exhibition ex, ArrayList<String> defects) {
         this.path = path;
         this.nrInv = nrInv;
         this.ex = ex;
+        this.defects = DBListHelper.listToString(defects);
     }
 
     public String getPath() {
@@ -34,17 +35,8 @@ public class AnnotatedImage extends SugarRecord {
         return nrInv;
     }
 
-    public ArrayList<Annotation> getAnnotations(){
-        return (ArrayList)Annotation.find(Annotation.class, "image = ?", this.getId().toString());
-    }
-
     public ArrayList<String> getDefects(){
-        ArrayList<String> defects = new ArrayList<>();
-        for(Annotation a : getAnnotations()){
-            if(a.getDefect()!=null)
-                defects.add(a.getDefect());
-        }
-        return defects;
+        return DBListHelper.stringToList(defects);
     }
 
     public boolean equals(AnnotatedImage other){
