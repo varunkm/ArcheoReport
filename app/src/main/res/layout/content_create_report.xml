@@ -381,6 +381,61 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="0 Photos Added."
                         android:id="@+id/imageticker" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Dates and Changes"
+                        android:paddingTop="10dp"
+                        android:id="@+id/DatesTitle" />
+
+
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:hint="Exit from Museum (dd/mm/yyyy)"
+                        android:id="@+id/exitDate"/>
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:hint="Opening / Installation (dd/mm/yyyy)"
+                        android:id="@+id/installDate"/>
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:text="Same Condition"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/samecondition1"/>
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Changes"
+                        android:id="@+id/changes1"/>
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:hint="End of Exhibition (dd/mm/yyyy)"
+                        android:id="@+id/endDate"/>
+                    <CheckBox
+                        android:layout_width="wrap_content"
+                        android:text="Same Condition"
+                        android:id="@+id/samecondition2"
+                        android:layout_height="wrap_content" />
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Changes"
+                        android:id="@+id/changes2"/>
+                    <EditText
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:hint="Return to Museum (dd/mm/yyyy)"
+                        android:id="@+id/returnDate"/>
+
                 </LinearLayout>
             </ScrollView>
 

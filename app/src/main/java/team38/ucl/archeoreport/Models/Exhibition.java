@@ -11,15 +11,16 @@ import java.util.Date;
 public class Exhibition extends SugarRecord{
     String name;
     String location;
-    long date;
-
+    long startdate;
+    long enddate;
     public Exhibition(){
 
     }
-    public Exhibition(String name, String location, Date date) {
+    public Exhibition(String name, String location, Date startdate, Date enddate) {
         this.name = name;
         this.location = location;
-        this.date = date.getTime();
+        this.startdate = startdate.getTime();
+        this.enddate = enddate.getTime();
     }
 
     public String getName() {
@@ -38,12 +39,16 @@ public class Exhibition extends SugarRecord{
         this.location = location;
     }
 
-    public Date getDate() {
-        return new Date(date);
+    public Date getStartDate() {
+        return new Date(startdate);
     }
 
-    public void setDate(Date date) {
-        this.date = date.getTime();
+    public void setStartDate(Date date) {
+        this.startdate = date.getTime();
     }
+
+    public Date getEndDate() {return new Date(enddate);}
+
+    public void setEnddate(Date date) {this.enddate = date.getTime();}
 
 }

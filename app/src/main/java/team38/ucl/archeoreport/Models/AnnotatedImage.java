@@ -16,6 +16,7 @@ public class AnnotatedImage extends SugarRecord {
     String path;
     String nrInv;
     String defects;
+
     public AnnotatedImage(){
 
     }

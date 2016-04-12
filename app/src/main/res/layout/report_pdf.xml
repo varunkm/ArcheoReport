@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="595dp"
     android:id="@+id/pdfviewcontainer"
-    android:padding="32dp"
+    android:padding="64dp"
     android:background="#FFFFFF"
-    android:layout_height="match_parent">
+    android:layout_height="892dp">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/maintitle"
         android:text="Condition Report"
         android:textSize="32sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inventorynumber"
+        android:layout_toRightOf="@id/maintitle"
+        android:paddingLeft="10dp"
+        android:textColor="#000000"
+        android:text="Test Text"
+        android:textSize="32sp"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_below="@+id/maintitle"
@@ -26,13 +36,12 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_toRightOf="@+id/detscontainer"
         android:layout_below="@+id/maintitle"
         android:paddingTop="10dp"
         android:id="@+id/defectscontainer"
-        android:paddingLeft="20dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentRight="true">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,10 +51,11 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_toRightOf="@+id/defectscontainer"
         android:layout_below="@+id/maintitle"
         android:paddingTop="10dp"
+android:layout_toRightOf="@+id/detscontainer"
         android:paddingLeft="20dp"
+        android:id="@+id/datesandwrappingcont"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
@@ -63,7 +73,7 @@
             android:layout_height="wrap_content"
             android:text="Protection"
             android:paddingTop="10dp"
-            android:textSize="24dp"/>
+            android:textSize="20dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,12 +84,24 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:text="Position"
-            android:textSize="24dp"/>
+            android:textSize="20dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/positioncontent"
             android:text="flat/vertical/on one side"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/datescontainer"
+            android:paddingTop="32dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text="Dates and Changes"
+                />
+        </LinearLayout>
 
     </LinearLayout>
     

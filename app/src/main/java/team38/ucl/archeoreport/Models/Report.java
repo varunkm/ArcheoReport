@@ -1,7 +1,9 @@
 package team38.ucl.archeoreport.Models;
 
 import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,11 +14,12 @@ import java.util.List;
  */
 
 public class Report extends SugarRecord {
-
+    @Ignore
+    SimpleDateFormat df;
 
     Exhibition exhibition;
     String invNum;
-    long date;
+    long dateCreated;
     String det1;
     String det2;
     String det3;
@@ -37,11 +40,23 @@ public class Report extends SugarRecord {
     String position;
     String pdfpath;
 
+    long exitDate;
+    long installDate;
+    long endDate;
+    long returnDate;
+
+    String changes1;
+    String changes2;
+
+    boolean sameCondition1;
+    boolean sameCondition2;
+
     public Report(Exhibition exhibition, String invNum, Date date, String det1, String det2, String det3, String det4, String det5, String det6, String det7, String genCondition, String specialCare, String crateNumber, boolean supportF,
-                  boolean plastic, boolean paper, boolean noTape, boolean ethafoam, boolean foamRubber, String position, String defects) {
+                  boolean plastic, boolean paper, boolean noTape, boolean ethafoam, boolean foamRubber, String position, String defects, Date exitDate, Date installDate, Date endDate, Date
+                  returnDate, String changes1, String changes2, boolean checked1, boolean checked2) {
         this.exhibition = exhibition;
         this.invNum = invNum;
-        this.date = date.getTime();
+        this.dateCreated = date.getTime();
         this.det1 = det1;
         this.det2 = det2;
         this.det3 = det3;
@@ -60,6 +75,19 @@ public class Report extends SugarRecord {
         this.foamRubber = foamRubber;
         this.defects = defects;
         this.position = position;
+        this.changes1 = changes1;
+        this.changes2 = changes2;
+        this.sameCondition1 = checked1;
+        this.sameCondition2 = checked2;
+        if(exitDate!= null)
+            this.exitDate = exitDate.getTime();
+        if(installDate!=null)
+            this.installDate = installDate.getTime();
+        if(endDate!=null)
+            this.endDate = endDate.getTime();
+        if(returnDate!= null)
+            this.returnDate = returnDate.getTime();
+        df = new SimpleDateFormat("dd/MM/yyyy");
     }
 
     //TODO Generate PDF
@@ -70,10 +98,71 @@ public class Report extends SugarRecord {
 
     public Date getDate()
     {
-        return new Date(date);
+        return new Date(dateCreated);
     }
 
+    public String getChanges1() {
+        if (!this.sameCondition1)
+            return changes1;
+        else
+            return "";
+    }
 
+    public String getChanges2() {
+        if(!sameCondition2)
+            return changes2;
+        else
+            return "";
+    }
+
+    public boolean isSameCondition1() {
+        return sameCondition1;
+    }
+
+    public boolean isSameCondition2() {
+        return sameCondition2;
+    }
+
+    public String getExitDate(){
+        if (hasExitDate())
+            return df.format(new Date(exitDate));
+        else
+            return "";
+    }
+
+    public String getInstallDate(){
+        if (hasInstallDate())
+            return df.format(new Date(installDate));
+        else
+            return "";
+    }
+
+    public String getEndDate(){
+        if (hasEndDate())
+            return df.format(new Date(endDate));
+        else
+            return "";
+    }
+    public String getReturnDate(){
+        if (hasReturnDate())
+            return df.format(new Date(returnDate));
+        else
+            return "";
+    }
+
+    public boolean hasExitDate(){
+        return this.exitDate!=0;
+    }
+    public boolean hasInstallDate(){
+        return this.installDate!=0;
+    }
+    public boolean hasEndDate(){
+        return this.endDate!=0;
+    }
+    public boolean hasReturnDate()
+    {
+        return this.returnDate!=0;
+    }
     public Exhibition getExhibition() {
         return exhibition;
     }

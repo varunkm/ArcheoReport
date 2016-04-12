@@ -1,42 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<RelativeLayout
     android:id="@+id/tabCreator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_gravity="center"
-    android:gravity="center_vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="45dp"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_add_exhibition_activity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingBottom="@dimen/activity_vertical_margin"
     >
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/exhibitionTxt"
-        android:layout_gravity="center"
-        android:layout_below="@+id/titleTxt"
-        android:layout_alignParentStart="true"
-        android:hint="Exibition Name " />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/exhibitionTxt"
+                android:layout_centerHorizontal="true"
+                android:hint="Exibition Name " />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/locationTxt"
-        android:layout_gravity="center"
-        android:layout_below="@+id/exhibitionTxt"
-        android:layout_alignParentStart="true"
-        android:hint="Location" />
-
-    <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:layout_gravity="center"
-        android:id="@+id/dateTxt"
-        android:layout_below="@+id/locationTxt"
-        android:layout_alignParentStart="true"
-        android:hint="Date" />
-</LinearLayout>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/locationTxt"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/exhibitionTxt"
+                android:hint="Location" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Date:"
+                android:id="@+id/startcap"
+                android:textSize="24sp"
+                android:layout_below="@+id/locationTxt"
+                android:layout_alignLeft="@+id/startinput"/>
+            <DatePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/startcap"
+                android:id="@+id/startinput"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Date:"
+                android:id="@+id/endcap"
+                android:textSize="24sp"
+                android:layout_below="@+id/startinput"
+                android:layout_alignLeft="@+id/endinput"/>
+            <DatePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/endinput"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/endcap"
+                android:layout_gravity="center"
+                android:inputType="date"
+                android:hint="End Date"/>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

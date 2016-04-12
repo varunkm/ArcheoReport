@@ -13,6 +13,8 @@ public class DBListHelper {
     }
 
     public static String listToString(ArrayList<String> strings){
+        if(strings.size() == 0)
+            return "";
         String str = strings.get(0);
         for(int i = 1; i < strings.size(); i++){
             str+=","+strings.get(i);

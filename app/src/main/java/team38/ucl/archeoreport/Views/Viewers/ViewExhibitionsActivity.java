@@ -16,6 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import team38.ucl.archeoreport.Models.AddCSVFileActivity;
@@ -137,8 +139,12 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
             location.setText(currentExhibition.getLocation());
 
             TextView date = (TextView) view.findViewById(R.id.date);
-            date.setText(currentExhibition.getDate().toString());
-
+            String dateStr = "";
+            SimpleDateFormat formatter=new SimpleDateFormat("dd-MM-yyyy");
+            dateStr+=formatter.format(currentExhibition.getStartDate());
+            dateStr+=" - ";
+            dateStr+=formatter.format(currentExhibition.getEndDate());
+            date.setText(dateStr);
             return view;
         }
 
