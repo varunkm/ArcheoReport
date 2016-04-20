@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,7 +26,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import team38.ucl.archeoreport.Models.AnnotatedImage;
-import team38.ucl.archeoreport.Models.Defect;
 import team38.ucl.archeoreport.Models.Exhibition;
 import team38.ucl.archeoreport.Models.Report;
 import team38.ucl.archeoreport.R;
@@ -199,12 +196,10 @@ class GalleryAdapter extends ArrayAdapter<AnnotatedImage>{
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         row = inflater.inflate(layoutResourceId, parent, false);
-        TextView inv = (TextView)row.findViewById(R.id.itemnum);
         ImageView img = (ImageView)row.findViewById(R.id.itemimage);
         AnnotatedImage item = (AnnotatedImage)getItem(position);
         File f = new File(item.getPath());
-        inv.setText(item.getNrInv());
-        Picasso.with(context).load(f).into(img);
+        Picasso.with(context).load(f).resize(200,200).centerCrop().into(img);
 
         return row;
     }

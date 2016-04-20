@@ -21,13 +21,13 @@
             android:value="archeoreport.db" />
         <meta-data
             android:name="VERSION"
-            android:value="2" />
+            android:value="6" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="true" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
-            android:value="team38.ucl.archeoreport" />
+            android:value="team38.ucl.archeoreport.Models" />
 
         <activity
             android:name=".Views.Viewers.AnnotateActivity"
@@ -62,6 +62,11 @@
         <activity
             android:name=".Views.Viewers.GalleryActivity"
             android:label="@string/title_activity_gallery"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".Models.AddCSVFileActivity"
+            android:label="@string/title_activity_add_csvfile"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>

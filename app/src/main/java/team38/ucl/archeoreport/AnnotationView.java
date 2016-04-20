@@ -1,25 +1,22 @@
 package team38.ucl.archeoreport;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
-import android.view.View;
-import android.content.Context;
 import android.util.AttributeSet;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Path;
+import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.Toast;
+import android.view.View;
 
 import java.util.ArrayList;
 
 import team38.ucl.archeoreport.Models.AnnotatedImage;
-import team38.ucl.archeoreport.Models.Annotation;
 
 /**
  * Created by varunmathur on 06/03/16.
@@ -43,14 +40,13 @@ public class AnnotationView extends View {
     private String invNum;
 
     AnnotatedImage anImage;
-    ArrayList<Annotation> annotations;
 
 
     public AnnotationView(Context context, AttributeSet attrs)
     {
         super(context,attrs);
         this.bgimg = bgimg;
-        this.setBackground(new BitmapDrawable(context.getResources(),bgimg));
+        this.setBgimg(bgimg);
         this.setDrawingCacheEnabled(true);
         setupDrawing();
     }

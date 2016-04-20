@@ -6,6 +6,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,9 +16,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
+import team38.ucl.archeoreport.Models.AddCSVFileActivity;
 import team38.ucl.archeoreport.Models.Exhibition;
 import team38.ucl.archeoreport.R;
 import team38.ucl.archeoreport.Views.Creators.AddExhibitionActivity;
@@ -34,6 +39,8 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle("Exhibitions");
         //END BOILERPLATE
+
+
 
         //Initialise collection, ListView and adapter:
         exhibitions = Exhibition.listAll(Exhibition.class);
@@ -81,6 +88,7 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -109,8 +117,12 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
             location.setText(currentExhibition.getLocation());
 
             TextView date = (TextView) view.findViewById(R.id.date);
-            date.setText(currentExhibition.getDate().toString());
-
+            String dateStr = "";
+            SimpleDateFormat formatter=new SimpleDateFormat("dd-MM-yyyy");
+            dateStr+=formatter.format(currentExhibition.getStartDate());
+            dateStr+=" - ";
+            dateStr+=formatter.format(currentExhibition.getEndDate());
+            date.setText(dateStr);
             return view;
         }
 
