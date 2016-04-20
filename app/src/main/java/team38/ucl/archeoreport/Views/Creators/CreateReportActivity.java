@@ -236,7 +236,6 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
 
         if (side)
             position = "On One Side";
-        //TODO Get dates from report creation screen
 
 
         Report rep = new Report(ExhibitionContext, nrInv, Calendar.getInstance().getTime(), det1_et, det2_et, det3_et, det4_et, det5_et, det6_et, det7_et,
@@ -298,7 +297,7 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
         defectstitle.setText("Defects");
         defectstitle.layout(220, 160, 410, 175);
         cont.addView(defectstitle);
-        //TODO and here
+
         for(int i = 0; i < defs.size(); i++)
         {
             String d = defs.get(i);
@@ -308,7 +307,6 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
             cont.addView(title);
         }
 
-        //TODO and here fam
         TextView datesandchange = tf.makeSubtitle();
         datesandchange.setText("Dates and Changes");
         datesandchange.layout(420,50,595,65);
@@ -356,10 +354,6 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
             datetext.layout(420, 290, 595, 335);
             cont.addView(datetext);
         }
-        //TODO Test Report dates and then push to repo.
-
-
-
 
         View reportview = findViewById(R.id.pdfviewcontainer);
         reportview.setDrawingCacheEnabled(true);
@@ -387,8 +381,8 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
         try {
             verifyStoragePermissions(this);
             File root = Environment.getExternalStorageDirectory();
-            root = new File(root,"ArcheoReport/");
-            root.mkdir();
+            root = new File(root,"ArcheoReport/Reports/"+rep.getExhibition().getName()+"/");
+            root.mkdirs();
             String name = rep.getInvNum().replace(".","_");
             name = name.replace(" ","-");
             File docfile = new File(root,name+".pdf");

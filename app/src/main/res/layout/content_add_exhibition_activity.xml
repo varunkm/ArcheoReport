@@ -38,35 +38,33 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Start Date:"
-                android:id="@+id/startcap"
-                android:textSize="24sp"
-                android:layout_below="@+id/locationTxt"
-                android:layout_alignLeft="@+id/startinput"/>
-            <DatePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/dateentrytitle"
                 android:layout_centerHorizontal="true"
-                android:layout_below="@id/startcap"
-                android:id="@+id/startinput"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="End Date:"
-                android:id="@+id/endcap"
-                android:textSize="24sp"
-                android:layout_below="@+id/startinput"
-                android:layout_alignLeft="@+id/endinput"/>
-            <DatePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/endinput"
-                android:layout_centerHorizontal="true"
-                android:layout_below="@id/endcap"
-                android:layout_gravity="center"
-                android:inputType="date"
-                android:hint="End Date"/>
+                android:layout_below="@id/locationTxt"
+                android:text="Start and End Dates"/>
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+
+                android:layout_below="@+id/dateentrytitle"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <DatePicker
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/startinput"
+                        />
+                    <DatePicker
+                        android:paddingLeft="20dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/endinput"
+                        android:inputType="date"
+                        android:hint="End Date"/>
+                </LinearLayout>
+            </HorizontalScrollView>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

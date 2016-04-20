@@ -1,21 +1,36 @@
 package team38.ucl.archeoreport.Views.Viewers;
 
+import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import team38.ucl.archeoreport.Models.AddCSVFileActivity;
+import team38.ucl.archeoreport.Models.AnnotatedImage;
 import team38.ucl.archeoreport.Models.Exhibition;
 import team38.ucl.archeoreport.Models.Report;
 import team38.ucl.archeoreport.R;
@@ -45,8 +60,8 @@ public class ViewReportsActivity extends AppCompatActivity {
         reports = Report.find(Report.class, "Exhibition = ?", exContext.getId().toString());
         ListView reportslst = (ListView)findViewById(R.id.reportslist);
 
-        repsAdapter = new ReportListAdapter();
-        reportslst.setAdapter(new ReportListAdapter());
+        repsAdapter = new ReportListAdapter(this);
+        reportslst.setAdapter(new ReportListAdapter(this));
 
         reportslst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,20 +113,27 @@ public class ViewReportsActivity extends AppCompatActivity {
         super.onResume();
         reInitialiseList();
     }
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_exhibition, menu);
+        return true;
+    }
 
     private void reInitialiseList()
     {
         reports =  Report.find(Report.class, "Exhibition = ?", exContext.getId().toString());
         ListView reportslst = (ListView)findViewById(R.id.reportslist);
-        repsAdapter = new ReportListAdapter();
+        repsAdapter = new ReportListAdapter(this);
         reportslst.setAdapter(repsAdapter);
         repsAdapter.notifyDataSetChanged();
     }
 
 
     private class ReportListAdapter extends ArrayAdapter<Report> {
-        public ReportListAdapter(){
+        private Context context;
+        public ReportListAdapter(Context context){
             super(ViewReportsActivity.this, R.layout.report_list_item, reports);
+            this.context=context;
         }
 
         //adding an element to our list
@@ -128,12 +150,52 @@ public class ViewReportsActivity extends AppCompatActivity {
             TextView date = (TextView) view.findViewById(R.id.date);
             date.setText(curRep.getDate().toString());
 
+
+            ArrayList<AnnotatedImage> images = (ArrayList)AnnotatedImage.find(AnnotatedImage.class,"nr_inv = ?",curRep.getInvNum());
+            ImageView imageView = (ImageView)view.findViewById(R.id.reportthumb);
+            if (images.size() > 0){
+                Log.i("IMAGE PATH", images.get(0).getPath());
+                File f = new File(images.get(0).getPath());
+                Picasso.with(ViewReportsActivity.this).load(f).centerCrop().resize(200,200).into(imageView);
+            }
             return view;
+        }
+
+        private List<File> getListFiles(File parentDir) {
+            ArrayList<File> inFiles = new ArrayList<File>();
+            File[] files = parentDir.listFiles();
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    inFiles.addAll(getListFiles(file));
+                } else {
+                    if (file.getName().endsWith(".png")) {
+                        inFiles.add(file);
+                    }
+                }
+            }
+            return inFiles;
         }
 
         public Report getItem(int position){
             return reports.get(position);
         }
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_importcsv:
+                Intent intent = new Intent(this, AddCSVFileActivity.class);
+                startActivity(intent);
 
+            case R.id.action_settings:
+
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
 }

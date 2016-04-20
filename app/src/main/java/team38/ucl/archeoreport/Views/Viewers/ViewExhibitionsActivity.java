@@ -87,30 +87,8 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
         exAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_exhibition, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_importcsv:
-                Intent intent = new Intent(this, AddCSVFileActivity.class);
-                startActivity(intent);
 
-            case R.id.action_settings:
 
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
     @Override
     protected void onResume() {
         super.onResume();

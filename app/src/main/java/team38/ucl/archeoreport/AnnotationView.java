@@ -46,7 +46,7 @@ public class AnnotationView extends View {
     {
         super(context,attrs);
         this.bgimg = bgimg;
-        this.setBackground(new BitmapDrawable(context.getResources(),bgimg));
+        this.setBgimg(bgimg);
         this.setDrawingCacheEnabled(true);
         setupDrawing();
     }

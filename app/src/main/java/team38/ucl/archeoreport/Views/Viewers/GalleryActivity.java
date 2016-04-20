@@ -196,12 +196,10 @@ class GalleryAdapter extends ArrayAdapter<AnnotatedImage>{
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         row = inflater.inflate(layoutResourceId, parent, false);
-        TextView inv = (TextView)row.findViewById(R.id.itemnum);
         ImageView img = (ImageView)row.findViewById(R.id.itemimage);
         AnnotatedImage item = (AnnotatedImage)getItem(position);
         File f = new File(item.getPath());
-        inv.setText(item.getNrInv());
-        Picasso.with(context).load(f).into(img);
+        Picasso.with(context).load(f).resize(200,200).centerCrop().into(img);
 
         return row;
     }
