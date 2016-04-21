@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -44,6 +46,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import team38.ucl.archeoreport.Models.AnnotatedImage;
 import team38.ucl.archeoreport.Models.AutoFillRow;
 import team38.ucl.archeoreport.Models.DBListHelper;
 import team38.ucl.archeoreport.Models.Detail;
@@ -62,7 +65,7 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
     private ArrayList<String> defectsChosen;
     private Spinner defectChooser;
     private boolean touch;
-
+    String nr_inv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,9 +122,10 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                    String nr_inv = nr_inv_edit.getText().toString();
-                    if(nr_inv!= null && nr_inv.length()>0){
-                        List<AutoFillRow> rows = AutoFillRow.find(AutoFillRow.class, "nrinv = ?",nr_inv);
+                    String nrinv  = nr_inv_edit.getText().toString();
+                    nr_inv = nrinv;
+                    if(nrinv!= null && nrinv.length()>0){
+                        List<AutoFillRow> rows = AutoFillRow.find(AutoFillRow.class, "nrinv = ?",nrinv);
                         if(rows.size()>0){
                         AutoFillRow row = rows.get(0);
                         autofillForm(row);
@@ -144,13 +148,54 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
         if (touch) {
+            //user has added a defect from the dropdown
             Spinner s = (Spinner) parent;
-            String defect = (String) s.getItemAtPosition(pos);
-            defectsChosen.add(defect);
-            LinearLayout l = (LinearLayout) findViewById(R.id.defsContainer);
-            TextView newDefect = new TextView(this);
-            newDefect.setText(defect);
-            l.addView(newDefect);
+            final String defect = (String) s.getItemAtPosition(pos);
+            if (!defectsChosen.contains(defect)) {
+                defectsChosen.add(defect);
+                LinearLayout l = (LinearLayout) findViewById(R.id.defsContainer);
+                TextView newDefect = new TextView(this);
+                newDefect.setText(defect);
+                l.addView(newDefect);
+                final EditText nr_inv_edit = (EditText)findViewById(R.id.nrInv);
+                final String nrinv  = nr_inv_edit.getText().toString();
+                //Clicking on specific defect will open prompt opening of photos annotated with that defect
+                newDefect.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //user has clicked defect
+                        AlertDialog.Builder alertadd = new AlertDialog.Builder(
+                                CreateReportActivity.this);
+                        LayoutInflater factory = LayoutInflater.from(CreateReportActivity.this);
+                        ArrayList<AnnotatedImage> imgs = (ArrayList)AnnotatedImage.find(AnnotatedImage.class,"nr_inv = ?",nrinv);
+                        final ArrayList<String> paths = new ArrayList<String>();
+                        for(AnnotatedImage ai : imgs){
+                            if(ai.getDefects().contains(defect)){
+                                paths.add(ai.getPath());
+                            }
+                        }
+                        final CharSequence[] paths_array  =  paths.toArray(new CharSequence[paths.size()]);
+
+                        alertadd.setItems(paths_array, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent();
+                                intent.setAction(android.content.Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.fromFile(new File(paths.get(which))), "image/png");
+                                startActivity(intent);
+                            }
+                        });
+                        alertadd.setNeutralButton("Here!", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dlg, int sumthin) {
+
+                            }
+                        });
+
+                        alertadd.show();
+                    }
+                });
+
+            }
         }
     }
     public void onNothingSelected(AdapterView<?> parent) {
