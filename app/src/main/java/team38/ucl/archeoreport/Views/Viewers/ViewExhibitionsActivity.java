@@ -41,7 +41,6 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
         //END BOILERPLATE
 
 
-
         //Initialise collection, ListView and adapter:
         exhibitions = Exhibition.listAll(Exhibition.class);
         ListView exListView = (ListView)findViewById(R.id.exhibitionlist);
@@ -52,7 +51,7 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
         exListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position,long id) {
-                //TODO Make sure it passes ID to reports view
+                //If user clicks on exhibition, open reports view passing contextual exhibition with it
                 Exhibition item = exhibitions.get(position);
                 Intent intent = new Intent(ViewExhibitionsActivity.this, ViewReportsActivity.class);
                 intent.putExtra("ExhibitionID",item.getId());

@@ -2,6 +2,7 @@ package team38.ucl.archeoreport.Views.Creators;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -238,166 +239,165 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
             position = "On One Side";
 
 
-        Report rep = new Report(ExhibitionContext, nrInv, Calendar.getInstance().getTime(), det1_et, det2_et, det3_et, det4_et, det5_et, det6_et, det7_et,
+        final Report rep = new Report(ExhibitionContext, nrInv, Calendar.getInstance().getTime(), det1_et, det2_et, det3_et, det4_et, det5_et, det6_et, det7_et,
                 condition, specialCare, crateNum, supportF, plastic, paper, noTape, ethafoam, foamRubber, position,defects,exitDate,installDate,endDate,returnDate,
                 changes1,changes2,checked1,checked2);
         rep.save();
+        final Activity context = this;
         /*
             PDF creation begins below
          */
-        setContentView(R.layout.report_pdf);
-        LinearLayout cont = new LinearLayout(this);
-        ArrayList<Detail> dets = (ArrayList) rep.getDetailsAsList();
-        TextView mainTitle = new TextView(this);
-        mainTitle.setTextSize(10);
-        mainTitle.setText("Condition Report: Inv. #" + rep.getInvNum());
-        mainTitle.layout(20, 20, 595, 50);
-
-        PDFTextFactory tf = new PDFTextFactory(this);
-        cont.addView(mainTitle);
-
-        for(int i = 0; i < dets.size(); i++)
-        {
-            Detail d = dets.get(i);
-
-            TextView title = tf.makeSubtitle();
-            title.setText(d.getTitle());
-
-            TextView det = tf.makeBodyText();
-            det.setText(d.getDetail());
-
-            title.layout(20, 50 + (i * 79), 210, 50 + (i * 79) + 20);
-            det.layout(20, 50 + (i * 79) + 20, 210, 50 + (i * 79) + 20 + 59);
-            cont.addView(title);
-            cont.addView(det);
-
-        }
-
-        TextView wrap = tf.makeBodyText();
-        wrap.setText(rep.wrappingToString());
-
-        TextView prot = tf.makeBodyText();
-        prot.setText(rep.protectionToString());
-
-        TextView pos = tf.makeBodyText();
-        pos.setText(rep.getPosition());
-
-        TextView wraptitle = tf.makeSubtitle();
-        TextView prottitle = tf.makeSubtitle();
-        TextView postitle = tf.makeSubtitle();
-
-        wraptitle.setText("Wrapping"); postitle.setText("Position"); prottitle.setText("Protection");
-        wraptitle.layout(220, 50, 410, 65); prottitle.layout(220, 85, 410, 100); postitle.layout(220, 120, 410, 135);
-        wrap.layout(220, 65, 410, 80); prot.layout(220, 100, 410, 115); pos.layout(220, 135, 410, 150);
-
-        cont.addView(wraptitle); cont.addView(wrap); cont.addView(prottitle); cont.addView(prot); cont.addView(postitle); cont.addView(pos);
-
-        ArrayList<String> defs = rep.getDefectsAsListofStrings();
-        TextView defectstitle = tf.makeSubtitle();
-        defectstitle.setText("Defects");
-        defectstitle.layout(220, 160, 410, 175);
-        cont.addView(defectstitle);
-
-        for(int i = 0; i < defs.size(); i++)
-        {
-            String d = defs.get(i);
-            TextView title = tf.makeBodyText();
-            title.setText(d);
-            title.layout(220, 175 + (i * 15), 410, 175 + (i * 15) + 15);
-            cont.addView(title);
-        }
-
-        TextView datesandchange = tf.makeSubtitle();
-        datesandchange.setText("Dates and Changes");
-        datesandchange.layout(420,50,595,65);
-        cont.addView(datesandchange);
-        if (rep.hasExitDate()){
-            TextView datetext = tf.makeBodyText();
-            datetext.setText("Exit Date:\n"+rep.getExitDate());
-            datetext.layout(420,65,595,110);
-            cont.addView(datetext);
-        }
-
-        if (rep.hasInstallDate()){
-            TextView datetext = tf.makeBodyText();
-            datetext.setText("Install Date:\n"+rep.getInstallDate());
-            datetext.layout(420, 110, 595, 155);
-            cont.addView(datetext);
-        }
-
-        TextView condition1 = tf.makeBodyText();
-        condition1.layout(420, 155, 595, 200);
-        if(rep.isSameCondition1())
-            condition1.setText("Condition unchanged");
-        else
-            condition1.setText("Condition Changed:\n"+rep.getChanges1());
-        cont.addView(condition1);
-
-        if (rep.hasEndDate()){
-            TextView datetext = tf.makeBodyText();
-            datetext.setText("End Date:\n"+rep.getEndDate());
-            datetext.layout(420, 200, 595, 245);
-            cont.addView(datetext);
-        }
-
-        TextView condition2 = tf.makeBodyText();
-        condition2.layout(420, 245, 595, 290);
-        if(rep.isSameCondition2())
-            condition2.setText("Condition unchanged");
-        else
-            condition2.setText("Condition Changed:\n"+rep.getChanges2());
-        cont.addView(condition2);
-
-        if(rep.hasReturnDate()){
-            TextView datetext = tf.makeBodyText();
-            datetext.setText("Return Date:\n"+rep.getReturnDate());
-            datetext.layout(420, 290, 595, 335);
-            cont.addView(datetext);
-        }
-
-        View reportview = findViewById(R.id.pdfviewcontainer);
-        reportview.setDrawingCacheEnabled(true);
-
-        reportview.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        reportview.layout(0, 0, reportview.getMeasuredWidth(), reportview.getMeasuredHeight());
-
-        reportview.buildDrawingCache(true);
-        PdfDocument document = new PdfDocument();
-
-        // crate a page description
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595,842,1).create();
-
-        // start a page
-        PdfDocument.Page page = document.startPage(pageInfo);
-
-        // draw something on the page
-        //LinearLayout datesandwrap = (LinearLayout)findViewById(R.id.datesandwrappingcont);
+        new Thread(
+            new Runnable(){
+                public void run(){
+                    LinearLayout cont = new LinearLayout(context);
+                    ArrayList<Detail> dets = (ArrayList) rep.getDetailsAsList();
 
 
-        cont.draw(page.getCanvas());
-        // finish the page
-        document.finishPage(page);
-        try {
-            verifyStoragePermissions(this);
-            File root = Environment.getExternalStorageDirectory();
-            root = new File(root,"ArcheoReport/Reports/"+rep.getExhibition().getName()+"/");
-            root.mkdirs();
-            String name = rep.getInvNum().replace(".","_");
-            name = name.replace(" ","-");
-            File docfile = new File(root,name+".pdf");
-            FileOutputStream pdfos = new FileOutputStream(docfile);
-            document.writeTo(pdfos);
-            rep.setPdfpath(docfile.getAbsolutePath());
-            rep.save();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                    PDFTextFactory tf = new PDFTextFactory(context);
+                    TextView mainTitle = tf.makeSubtitle();
+                    mainTitle.setText("Condition Report: Inv. #" + rep.getInvNum());
+                    mainTitle.layout(20, 20, 595, 50);
+                    cont.addView(mainTitle);
 
-        // close the document
-        document.close();
+                    for(int i = 0; i < dets.size(); i++)
+                    {
+                        Detail d = dets.get(i);
+
+                        TextView title = tf.makeSubtitle();
+                        title.setText(d.getTitle());
+
+                        TextView det = tf.makeBodyText();
+                        det.setText(d.getDetail());
+
+                        title.layout(20, 50 + (i * 79), 210, 50 + (i * 79) + 20);
+                        det.layout(20, 50 + (i * 79) + 20, 210, 50 + (i * 79) + 20 + 59);
+                        cont.addView(title);
+                        cont.addView(det);
+
+                    }
+
+                    TextView wrap = tf.makeBodyText();
+                    wrap.setText(rep.wrappingToString());
+
+                    TextView prot = tf.makeBodyText();
+                    prot.setText(rep.protectionToString());
+
+                    TextView pos = tf.makeBodyText();
+                    pos.setText(rep.getPosition());
+
+                    TextView wraptitle = tf.makeSubtitle();
+                    TextView prottitle = tf.makeSubtitle();
+                    TextView postitle = tf.makeSubtitle();
+
+                    wraptitle.setText("Wrapping"); postitle.setText("Position"); prottitle.setText("Protection");
+                    wraptitle.layout(220, 50, 410, 65); prottitle.layout(220, 85, 410, 100); postitle.layout(220, 120, 410, 135);
+                    wrap.layout(220, 65, 410, 80); prot.layout(220, 100, 410, 115); pos.layout(220, 135, 410, 150);
+
+                    cont.addView(wraptitle); cont.addView(wrap); cont.addView(prottitle); cont.addView(prot); cont.addView(postitle); cont.addView(pos);
+
+                    ArrayList<String> defs = rep.getDefectsAsListofStrings();
+                    TextView defectstitle = tf.makeSubtitle();
+                    defectstitle.setText("Defects");
+                    defectstitle.layout(220, 160, 410, 175);
+                    cont.addView(defectstitle);
+
+                    for(int i = 0; i < defs.size(); i++)
+                    {
+                        String d = defs.get(i);
+                        TextView title = tf.makeBodyText();
+                        title.setText(d);
+                        title.layout(220, 175 + (i * 15), 410, 175 + (i * 15) + 15);
+                        cont.addView(title);
+                    }
+
+                    TextView datesandchange = tf.makeSubtitle();
+                    datesandchange.setText("Dates and Changes");
+                    datesandchange.layout(420,50,595,65);
+                    cont.addView(datesandchange);
+                    if (rep.hasExitDate()){
+                        TextView datetext = tf.makeBodyText();
+                        datetext.setText("Exit Date:\n"+rep.getExitDate());
+                        datetext.layout(420,65,595,110);
+                        cont.addView(datetext);
+                    }
+
+                    if (rep.hasInstallDate()){
+                        TextView datetext = tf.makeBodyText();
+                        datetext.setText("Install Date:\n"+rep.getInstallDate());
+                        datetext.layout(420, 110, 595, 155);
+                        cont.addView(datetext);
+                    }
+
+                    TextView condition1 = tf.makeBodyText();
+                    condition1.layout(420, 155, 595, 200);
+                    if(rep.isSameCondition1())
+                        condition1.setText("Condition unchanged");
+                    else
+                        condition1.setText("Condition Changed:\n"+rep.getChanges1());
+                    cont.addView(condition1);
+
+                    if (rep.hasEndDate()){
+                        TextView datetext = tf.makeBodyText();
+                        datetext.setText("End Date:\n"+rep.getEndDate());
+                        datetext.layout(420, 200, 595, 245);
+                        cont.addView(datetext);
+                    }
+
+                    TextView condition2 = tf.makeBodyText();
+                    condition2.layout(420, 245, 595, 290);
+                    if(rep.isSameCondition2())
+                        condition2.setText("Condition unchanged");
+                    else
+                        condition2.setText("Condition Changed:\n"+rep.getChanges2());
+                    cont.addView(condition2);
+
+                    if(rep.hasReturnDate()){
+                        TextView datetext = tf.makeBodyText();
+                        datetext.setText("Return Date:\n"+rep.getReturnDate());
+                        datetext.layout(420, 290, 595, 335);
+                        cont.addView(datetext);
+                    }
+
+
+                    PdfDocument document = new PdfDocument();
+
+                    // crate a page description
+                    PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595,842,1).create();
+
+                    // start a page
+                    PdfDocument.Page page = document.startPage(pageInfo);
+
+                    // draw something on the page
+                    //LinearLayout datesandwrap = (LinearLayout)findViewById(R.id.datesandwrappingcont);
+
+
+                    cont.draw(page.getCanvas());
+                    // finish the page
+                    document.finishPage(page);
+                    try {
+                        verifyStoragePermissions(context);
+                        File root = Environment.getExternalStorageDirectory();
+                        root = new File(root,"ArcheoReport/Reports/"+rep.getExhibition().getName()+"/");
+                        root.mkdirs();
+                        String name = rep.getInvNum().replace(".","_");
+                        name = name.replace(" ","-");
+                        File docfile = new File(root,name+".pdf");
+                        FileOutputStream pdfos = new FileOutputStream(docfile);
+                        document.writeTo(pdfos);
+                        rep.setPdfpath(docfile.getAbsolutePath());
+                        rep.save();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    // close the document
+                    document.close();
+                }
+            }).start();
+
         return rep;
     }
 

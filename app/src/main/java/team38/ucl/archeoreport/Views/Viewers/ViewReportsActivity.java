@@ -1,13 +1,9 @@
 package team38.ucl.archeoreport.Views.Viewers;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +32,16 @@ import team38.ucl.archeoreport.Models.Report;
 import team38.ucl.archeoreport.R;
 import team38.ucl.archeoreport.Views.Creators.CreateReportActivity;
 
+/*
+* ViewReportsActivity
+*
+* This is the controller for the reports view. This is the screen where the user is presented with a list of reports loaded from the database under
+* the context of a specific exhibition
+*
+*
+*
+* @author Varun Mathur
+* */
 
 public class ViewReportsActivity extends AppCompatActivity {
     private List<Report> reports;
@@ -45,7 +51,6 @@ public class ViewReportsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //TODO Implement image adding
 
         setContentView(R.layout.activity_view_reports);
 
@@ -55,6 +60,7 @@ public class ViewReportsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Long id = intent.getLongExtra("ExhibitionID", 0);
+        //load contextual exhibition from intent
         exContext = Exhibition.findById(Exhibition.class,id);
 
         reports = Report.find(Report.class, "Exhibition = ?", exContext.getId().toString());
@@ -66,6 +72,7 @@ public class ViewReportsActivity extends AppCompatActivity {
         reportslst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+                //if the user selects a report in the list, open the corresponding PDF in the device's native document viewer
                 Report item = (Report) adapter.getItemAtPosition(position);
                 File file = new File(item.getPdfpath());
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -76,15 +83,16 @@ public class ViewReportsActivity extends AppCompatActivity {
 
         });
 
+
+        //The user is presented with two actions, view gallery and create new report.
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ViewReportsActivity.this, CreateReportActivity.class);
                 intent.putExtra("ExhibitionID", exContext.getId());
-
                 startActivity(intent);
-                //TODO: Handle onResume,
             }
         });
 
@@ -93,15 +101,32 @@ public class ViewReportsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ViewReportsActivity.this, GalleryActivity.class);
-
-
                 startActivity(intent);
-                //TODO: Handle onResume,
             }
         });
     }
 
+    /*
+    * Handle user clicking the "import csv" button in the action bar. Launches AddCSVFileActivity
+    * */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_importcsv:
+                Intent intent = new Intent(this, AddCSVFileActivity.class);
+                startActivity(intent);
 
+            case R.id.action_settings:
+
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
     @Override
     protected void onRestart() {
         super.onRestart();
@@ -128,7 +153,9 @@ public class ViewReportsActivity extends AppCompatActivity {
         repsAdapter.notifyDataSetChanged();
     }
 
-
+    /*
+    * Custom array adapter for the reports listview. Populates R.layout.report_list_item with data from the report
+    * */
     private class ReportListAdapter extends ArrayAdapter<Report> {
         private Context context;
         public ReportListAdapter(Context context){
@@ -150,13 +177,16 @@ public class ViewReportsActivity extends AppCompatActivity {
             TextView date = (TextView) view.findViewById(R.id.date);
             date.setText(curRep.getDate().toString());
 
-
+            //Set image in list item to be the first image found that belongs to the report
             ArrayList<AnnotatedImage> images = (ArrayList)AnnotatedImage.find(AnnotatedImage.class,"nr_inv = ?",curRep.getInvNum());
             ImageView imageView = (ImageView)view.findViewById(R.id.reportthumb);
             if (images.size() > 0){
                 Log.i("IMAGE PATH", images.get(0).getPath());
                 File f = new File(images.get(0).getPath());
                 Picasso.with(ViewReportsActivity.this).load(f).centerCrop().resize(200,200).into(imageView);
+            }
+            else{
+                imageView.setImageDrawable(null);
             }
             return view;
         }
@@ -180,22 +210,5 @@ public class ViewReportsActivity extends AppCompatActivity {
             return reports.get(position);
         }
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_importcsv:
-                Intent intent = new Intent(this, AddCSVFileActivity.class);
-                startActivity(intent);
 
-            case R.id.action_settings:
-
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
 }

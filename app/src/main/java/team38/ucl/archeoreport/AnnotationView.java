@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ import team38.ucl.archeoreport.Models.AnnotatedImage;
 /**
  * Created by varunmathur on 06/03/16.
  */
-public class AnnotationView extends View {
+public class AnnotationView extends ImageView {
     private Bitmap bgimg;
     //drawing path
     private Path drawPath;
@@ -44,8 +45,8 @@ public class AnnotationView extends View {
 
     public AnnotationView(Context context, AttributeSet attrs)
     {
-        super(context,attrs);
-        this.bgimg = bgimg;
+        super(context, attrs);
+        Log.i("Constructor","ANNOTATION VIEW");
         this.setBgimg(bgimg);
         this.setDrawingCacheEnabled(true);
         setupDrawing();
@@ -53,7 +54,7 @@ public class AnnotationView extends View {
     public void setBgimg(Bitmap img)
     {
         this.bgimg = img;
-        this.setBackground(new BitmapDrawable(getContext().getResources(), bgimg));
+        this.setBackground(new BitmapDrawable(bgimg));
     }
     @Override
     protected void onDraw(Canvas canvas)
@@ -106,6 +107,7 @@ public class AnnotationView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
+        Log.i("SIZE CHANGED","");
         super.onSizeChanged(w, h, oldw, oldh);
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
@@ -127,7 +129,6 @@ public class AnnotationView extends View {
         drawPaint.setStrokeWidth(brushSize);
         invalidate();
     }
-
     public void setEraserMode(Boolean erase)
     {
         eraserMode = erase;

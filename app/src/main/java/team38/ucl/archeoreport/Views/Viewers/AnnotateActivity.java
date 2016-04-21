@@ -1,6 +1,7 @@
 package team38.ucl.archeoreport.Views.Viewers;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,6 +48,7 @@ public class AnnotateActivity extends AppCompatActivity implements OnItemSelecte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.i("ANNOTATE ACTIVITY", "OnCreate called.");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Intent callingIntent = getIntent();
@@ -111,30 +114,39 @@ public class AnnotateActivity extends AppCompatActivity implements OnItemSelecte
         });
 
     }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
     private void saveAnnotatedImage(AnnotationView view)
     {
-        view.setDrawingCacheEnabled(true);
-        Bitmap b = view.getDrawingCache();
-        String root = Environment.getExternalStorageDirectory().toString();
-        File storageDir = new File(root+"/ArcheoReport/Images/"+nrInv);
-        storageDir.mkdirs();
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = nrInv + timeStamp + "_annotated";
-        try {
-            File image = File.createTempFile
-                    (
-                            imageFileName,  /* prefix */
-                            ".png",         /* suffix */
-                            storageDir      /* directory */
-                    );
-            b.compress(Bitmap.CompressFormat.PNG,100,new FileOutputStream(image));
-            AnnotatedImage anImage = new AnnotatedImage(image.getPath(),nrInv,exhibitionContext,view.getDefects());
-            anImage.save();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        final AnnotationView v = view;
+        new Thread(new Runnable(){
+            public void run(){
+                v.setDrawingCacheEnabled(true);
+                Bitmap b = v.getDrawingCache();
+                String root = Environment.getExternalStorageDirectory().toString();
+                File storageDir = new File(root+"/ArcheoReport/Images/"+nrInv);
+                storageDir.mkdirs();
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                String imageFileName = nrInv + timeStamp + "_annotated";
+                try {
+                    File image = File.createTempFile
+                            (
+                                    imageFileName,  /* prefix */
+                                    ".png",         /* suffix */
+                                    storageDir      /* directory */
+                            );
+                    b.compress(Bitmap.CompressFormat.PNG,100,new FileOutputStream(image));
+                    AnnotatedImage anImage = new AnnotatedImage(image.getPath(),nrInv,exhibitionContext,v.getDefects());
+                    anImage.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+            }
+        }).start();
     }
 
 
