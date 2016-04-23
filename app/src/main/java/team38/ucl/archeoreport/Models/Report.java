@@ -124,13 +124,17 @@ public class Report extends SugarRecord {
     }
 
     public String getExitDate(){
-        if (hasExitDate())
-            return df.format(new Date(exitDate));
+        df = new SimpleDateFormat("dd/MM/yyyy");
+        if (hasExitDate()) {
+            Date d = new Date(exitDate);
+            return df.format(d);
+        }
         else
             return "";
     }
 
     public String getInstallDate(){
+        df = new SimpleDateFormat("dd/MM/yyyy");
         if (hasInstallDate())
             return df.format(new Date(installDate));
         else
@@ -138,12 +142,14 @@ public class Report extends SugarRecord {
     }
 
     public String getEndDate(){
+        df = new SimpleDateFormat("dd/MM/yyyy");
         if (hasEndDate())
             return df.format(new Date(endDate));
         else
             return "";
     }
     public String getReturnDate(){
+        df = new SimpleDateFormat("dd/MM/yyyy");
         if (hasReturnDate())
             return df.format(new Date(returnDate));
         else

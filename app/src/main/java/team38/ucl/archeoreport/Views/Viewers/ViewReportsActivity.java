@@ -1,6 +1,8 @@
 package team38.ucl.archeoreport.Views.Viewers;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -71,14 +73,32 @@ public class ViewReportsActivity extends AppCompatActivity {
 
         reportslst.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
-                //if the user selects a report in the list, open the corresponding PDF in the device's native document viewer
-                Report item = (Report) adapter.getItemAtPosition(position);
-                File file = new File(item.getPdfpath());
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(intent);
+            public void onItemClick(final AdapterView<?> adapter, View v, final int position, long id) {
+                CharSequence[] choices = {"View PDF", "Modify"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViewReportsActivity.this);
+                builder.setTitle("Choose Action...")
+                        .setItems(choices, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(which == 0) {
+                                    //if the user selects a report in the list, open the corresponding PDF in the device's native document viewer
+                                    Report item = (Report) adapter.getItemAtPosition(position);
+                                    File file = new File(item.getPdfpath());
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                    startActivity(intent);
+                                }
+                                else{
+                                    Intent intent = new Intent(ViewReportsActivity.this, CreateReportActivity.class);
+                                    intent.putExtra("ExhibitionID", exContext.getId());
+                                    intent.putExtra("ModifyOld",new Long(1));
+                                    Report item = (Report) adapter.getItemAtPosition(position);
+                                    intent.putExtra("OldReport",item.getId());
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                builder.show();
             }
 
         });
@@ -92,6 +112,7 @@ public class ViewReportsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ViewReportsActivity.this, CreateReportActivity.class);
                 intent.putExtra("ExhibitionID", exContext.getId());
+                intent.putExtra("ModifyOld",new Long(0));
                 startActivity(intent);
             }
         });
