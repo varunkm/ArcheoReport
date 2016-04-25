@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -82,11 +83,16 @@ public class ViewReportsActivity extends AppCompatActivity {
                                 if(which == 0) {
                                     //if the user selects a report in the list, open the corresponding PDF in the device's native document viewer
                                     Report item = (Report) adapter.getItemAtPosition(position);
-                                    File file = new File(item.getPdfpath());
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                    startActivity(intent);
+                                    if(item.getPdfpath()!=null) {
+                                        File file = new File(item.getPdfpath());
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                        startActivity(intent);
+                                    }
+                                    else{
+                                        Toast.makeText(ViewReportsActivity.this, "PDF is still rendering",Toast.LENGTH_LONG).show();
+                                    }
                                 }
                                 else{
                                     Intent intent = new Intent(ViewReportsActivity.this, CreateReportActivity.class);
