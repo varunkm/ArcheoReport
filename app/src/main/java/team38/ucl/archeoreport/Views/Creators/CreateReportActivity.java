@@ -145,6 +145,11 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
                 }
             }
 
+            ArrayList<AnnotatedImage> imgs = (ArrayList)AnnotatedImage.find(AnnotatedImage.class,"nr_inv = ?", oldrep.getInvNum());
+            TextView numImages = (TextView)findViewById(R.id.imageticker);
+            imageCount += imgs.size();
+            numImages.setText(imageCount+ " Photos Added.");
+
         }
 
 
@@ -263,7 +268,7 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
                         });
                         alertadd.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dlg, int sumthin) {
-
+                                    //close dialog window
                             }
                         });
 
@@ -588,7 +593,7 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
         if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             unannotated  = data.getData();
 
-            }
+        }
 
         else if((requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK && data != null && data.getData() != null)){
             unannotated = currentImgUri;

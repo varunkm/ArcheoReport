@@ -287,6 +287,7 @@ public class Report extends SugarRecord {
     {
 
         ArrayList<Detail> dets = new ArrayList<>();
+        dets.add(new Detail("General Condition",genCondition));
         dets.add(new Detail("Oggetto",det1));
         dets.add(new Detail("Tecnica",det2));
         dets.add(new Detail("Dimens",det3));
@@ -294,7 +295,6 @@ public class Report extends SugarRecord {
         dets.add(new Detail("Collacazione",det5));
         dets.add(new Detail("Stato Conserv",det6));
         dets.add(new Detail("Interventi Fatti",det7));
-        dets.add(new Detail("General Condition",genCondition));
         dets.add(new Detail("Special Care",specialCare));
         dets.add(new Detail("Crate Number",crateNumber));
         return dets;
