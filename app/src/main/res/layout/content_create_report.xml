@@ -45,65 +45,49 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/nrInv"
-                        android:layout_below="@+id/details"
-                        android:layout_alignParentStart="true"
-                        android:hint="Nr Inv: " />
+                        android:hint="Nr. Inv." />
 
                     <EditText
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/det1"
-                        android:layout_below="@+id/nrInv"
-                        android:layout_alignParentStart="true"
-                        android:hint="Oggetto:" />
+                        android:hint="@string/det1" />
 
                     <EditText
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/det2"
-                        android:layout_below="@+id/det1"
-                        android:layout_alignParentStart="true"
-                        android:hint="Tecnica:" />
+                        android:hint="@string/det2" />
 
                     <EditText
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/det3"
-                        android:layout_below="@+id/det2"
-                        android:layout_alignParentStart="true"
-                        android:hint="Dimens:" />
+                        android:hint="@string/det3" />
 
                     <EditText
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/det4"
-                        android:layout_below="@+id/det3"
-                        android:layout_alignParentStart="true"
-                        android:hint="Datazione:" />
+                        android:hint="@string/det4" />
 
                     <EditText
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/det5"
-                        android:layout_below="@+id/det4"
-                        android:layout_alignParentStart="true"
-                        android:hint="Collocazione:" />
+                        android:hint="@string/det5" />
 
                     <EditText
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/det6"
-                        android:layout_below="@+id/det5"
-                        android:layout_alignParentStart="true"
-                        android:hint="Stato Conserv: " />
+                        android:hint="@string/det6" />
 
                     <EditText
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/det7"
-                        android:layout_below="@+id/det6"
-                        android:layout_alignParentStart="true"
-                        android:hint="Interventi Fatti:" />
+                        android:hint="@string/det7" />
 
                     <EditText
                         android:layout_width="150dp"
@@ -111,9 +95,7 @@
                         android:inputType="number"
                         android:ems="10"
                         android:id="@+id/crateNumber"
-                        android:hint="Crate Number:"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignStart="@+id/defectsTitle" />
+                        android:hint="@string/det10"/>
 
                     <CheckBox
                         android:layout_width="wrap_content"
@@ -185,7 +167,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/CondNotes"
-                        android:hint="Condition Notes:"
+                        android:text="Condition Notes:"
                         android:layout_below="@+id/specialCare"
                         android:layout_alignStart="@+id/specialCare" />
 
@@ -193,7 +175,7 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:id="@+id/specialCare"
-                        android:hint="Special Care"
+                        android:text="Special Care"
                         android:layout_below="@+id/conditionGroup"
                         android:layout_alignStart="@+id/conditionGroup" />
                 </LinearLayout>

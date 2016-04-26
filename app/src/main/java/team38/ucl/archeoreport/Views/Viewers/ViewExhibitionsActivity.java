@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,18 +42,25 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
         //END BOILERPLATE
 
 
-
         //Initialise collection, ListView and adapter:
         exhibitions = Exhibition.listAll(Exhibition.class);
         ListView exListView = (ListView)findViewById(R.id.exhibitionlist);
         exAdapter = new ExhibitionListAdapter();
         exListView.setAdapter(exAdapter);
         exAdapter.notifyDataSetChanged();
-
+        if (exhibitions.size() == 0){
+            TextView exviewtitle = (TextView)findViewById(R.id.exviewtitle);
+            exviewtitle.setText("Add an Exhibition by clicking the icon in the bottom right...");
+        }
+        else
+        {
+            TextView exviewtitle = (TextView)findViewById(R.id.exviewtitle);
+            exviewtitle.setText("Exhibitions");
+        }
         exListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position,long id) {
-                //TODO Make sure it passes ID to reports view
+                //If user clicks on exhibition, open reports view passing contextual exhibition with it
                 Exhibition item = exhibitions.get(position);
                 Intent intent = new Intent(ViewExhibitionsActivity.this, ViewReportsActivity.class);
                 intent.putExtra("ExhibitionID",item.getId());
@@ -75,7 +83,15 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         reInitialiseList();
-
+        if (exhibitions.size() == 0){
+            TextView exviewtitle = (TextView)findViewById(R.id.exviewtitle);
+            exviewtitle.setText("Add an Exhibition by clicking the icon in the bottom right...");
+        }
+        else
+        {
+            TextView exviewtitle = (TextView)findViewById(R.id.exviewtitle);
+            exviewtitle.setText("Exhibitions");
+        }
         Log.i("VIEW EXHIBITIONS","ONRESTART");
     }
     private void reInitialiseList()
@@ -94,6 +110,15 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
         super.onResume();
         reInitialiseList();
         Log.i("VIEW EXHIBITIONS", "ONRESUME");
+        if (exhibitions.size() == 0){
+            TextView exviewtitle = (TextView)findViewById(R.id.exviewtitle);
+            exviewtitle.setText("Add an Exhibition by clicking the icon in the bottom right...");
+        }
+        else
+        {
+            TextView exviewtitle = (TextView)findViewById(R.id.exviewtitle);
+            exviewtitle.setText("Exhibitions");
+        }
 
     }
 
@@ -108,7 +133,7 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
             if(view == null)
                 view = getLayoutInflater().inflate(R.layout.exhibition_list_item, parent, false);
 
-            Exhibition currentExhibition = exhibitions.get(position);
+            final Exhibition currentExhibition = exhibitions.get(position);
 
             TextView name = (TextView) view.findViewById(R.id.exhibitName);
             name.setText(currentExhibition.getName());
@@ -123,6 +148,16 @@ public class ViewExhibitionsActivity extends AppCompatActivity {
             dateStr+=" - ";
             dateStr+=formatter.format(currentExhibition.getEndDate());
             date.setText(dateStr);
+
+            ImageButton btn = (ImageButton)view.findViewById(R.id.deletebutton);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ExhibitionListAdapter.this.remove(currentExhibition);
+                    ExhibitionListAdapter.this.notifyDataSetChanged();
+                    currentExhibition.delete();
+                }
+            });
             return view;
         }
 

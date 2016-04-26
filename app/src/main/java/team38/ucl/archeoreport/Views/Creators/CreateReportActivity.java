@@ -2,10 +2,12 @@ package team38.ucl.archeoreport.Views.Creators;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
@@ -18,6 +20,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,12 +29,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,6 +50,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import team38.ucl.archeoreport.Models.AnnotatedImage;
 import team38.ucl.archeoreport.Models.AutoFillRow;
 import team38.ucl.archeoreport.Models.DBListHelper;
 import team38.ucl.archeoreport.Models.Detail;
@@ -61,13 +69,90 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
     private ArrayList<String> defectsChosen;
     private Spinner defectChooser;
     private boolean touch;
-
+    String nr_inv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_report);
         Intent intent = getIntent();
         Long id = intent.getLongExtra("ExhibitionID", 0);
+        Long modifyPast = intent.getLongExtra("ModifyOld",0);
+        defectsChosen = new ArrayList<>();
+        if(modifyPast == 1) {
+            Long repId = intent.getLongExtra("OldReport", -1);
+            Report oldrep = Report.findById(Report.class, repId);
+            EditText nrinv = (EditText)findViewById(R.id.nrInv);
+            EditText det1  = (EditText)findViewById(R.id.det1);
+            EditText det2  = (EditText)findViewById(R.id.det2);
+            EditText det3  = (EditText)findViewById(R.id.det3);
+            EditText det4  = (EditText)findViewById(R.id.det4);
+            EditText det5  = (EditText)findViewById(R.id.det5);
+            EditText det6  = (EditText)findViewById(R.id.det6);
+            EditText det7  = (EditText)findViewById(R.id.det7);
+            EditText sc    = (EditText)findViewById(R.id.specialCare);
+            EditText cn    = (EditText)findViewById(R.id.crateNumber);
+            EditText c1    = (EditText)findViewById(R.id.changes1);
+            EditText c2    = (EditText)findViewById(R.id.changes2);
+            EditText d1    = (EditText)findViewById(R.id.exitDate);
+            EditText d2    = (EditText)findViewById(R.id.installDate);
+            EditText d3    = (EditText)findViewById(R.id.endDate);
+            EditText d4    = (EditText)findViewById(R.id.returnDate);
+            CheckBox sf    = (CheckBox)findViewById(R.id.supporFondazioneCheckBox);
+            CheckBox pl    = (CheckBox)findViewById(R.id.plasticCheck);
+            CheckBox pa    = (CheckBox)findViewById(R.id.paperCheck);
+            CheckBox no    = (CheckBox)findViewById(R.id.tapeCheck);
+            CheckBox et    = (CheckBox)findViewById(R.id.foamCheck);
+            CheckBox fr    = (CheckBox)findViewById(R.id.foamRubberCheck);
+            CheckBox s1    = (CheckBox)findViewById(R.id.samecondition1);
+            CheckBox s2    = (CheckBox)findViewById(R.id.samecondition2);
+
+            nrinv.setText(oldrep.getInvNum());
+            det1.setText(oldrep.getDet1());
+            det2.setText(oldrep.getDet2());
+            det3.setText(oldrep.getDet3());
+            det4.setText(oldrep.getDet4());
+            det5.setText(oldrep.getDet5());
+            det6.setText(oldrep.getDet6());
+            det7.setText(oldrep.getDet7());
+            sc.setText(oldrep.getSpecialCare());
+            cn.setText(oldrep.getCrateNumber());
+            c1.setText(oldrep.getChanges1());
+            c2.setText(oldrep.getChanges2());
+            d1.setText(oldrep.getExitDate());
+            d2.setText(oldrep.getInstallDate());
+            d3.setText(oldrep.getEndDate());
+            d4.setText(oldrep.getReturnDate());
+            sf.setChecked(oldrep.isSupportF());
+            pl.setChecked(oldrep.isPlastic());
+            pa.setChecked(oldrep.isPaper());
+            no.setChecked(oldrep.isNoTape());
+            et.setChecked(oldrep.isEthafoam());
+            fr.setChecked(oldrep.isFoamRubber());
+            s1.setChecked(oldrep.isSameCondition1());
+            s2.setChecked(oldrep.isSameCondition2());
+            for(String def : oldrep.getDefectsAsListofStrings()) {
+                defectsChosen.add(def);
+                LinearLayout l = (LinearLayout) findViewById(R.id.defsContainer);
+                TextView newDefect = new TextView(this);
+                newDefect.setText(def);
+                l.addView(newDefect);
+            }
+            RadioGroup radioButtonGroup = (RadioGroup) findViewById(R.id.conditionGroup);
+            for(int i = 0; i < radioButtonGroup.getChildCount(); i++){
+                if(((RadioButton)radioButtonGroup.getChildAt(i)).getText().toString().equals(oldrep.getGenCondition())){
+                    ((RadioButton)radioButtonGroup.getChildAt(i)).setChecked(true);
+                    break;
+                }
+            }
+
+            ArrayList<AnnotatedImage> imgs = (ArrayList)AnnotatedImage.find(AnnotatedImage.class,"nr_inv = ?", oldrep.getInvNum());
+            TextView numImages = (TextView)findViewById(R.id.imageticker);
+            imageCount += imgs.size();
+            numImages.setText(imageCount+ " Photos Added.");
+
+        }
+
+
         ExhibitionContext = Exhibition.findById(Exhibition.class, id);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,8 +160,6 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
         LinearLayout defContainer = (LinearLayout) findViewById(R.id.defsContainer);
         int count = defContainer.getChildCount();
         String[] names = getResources().getStringArray(R.array.defect_choices);
-
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,17 +172,19 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
         Button addFromDevice = (Button)findViewById(R.id.addDeviceBttn);
         Button addFromCamera = (Button)findViewById(R.id.launchCameraBttn);
 
-        addFromCamera.setOnClickListener(new View.OnClickListener() {
-                                             @Override
-                                             public void onClick(View v) {
-                                                 String nrInv = ((EditText) (findViewById(R.id.nrInv))).getText().toString();
-                                                 if (!nrInv.matches("")) {
-                                                     dispatchTakePictureIntent();
-                                                 } else {
-                                                     Toast.makeText(getApplicationContext(), "Please fill out report completely", Toast.LENGTH_SHORT).show();
-                                                 }
-                                             }
-                                         }
+        addFromCamera.setOnClickListener(
+                new View.OnClickListener()
+                {
+                     @Override
+                     public void onClick(View v) {
+                         String nrInv = ((EditText) (findViewById(R.id.nrInv))).getText().toString();
+                         if (!nrInv.matches("")) {
+                             dispatchTakePictureIntent();
+                         } else {
+                             Toast.makeText(getApplicationContext(), "Please fill out report completely", Toast.LENGTH_SHORT).show();
+                         }
+                     }
+                }
         );
         addFromDevice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,9 +203,10 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
-                    String nr_inv = nr_inv_edit.getText().toString();
-                    if(nr_inv!= null && nr_inv.length()>0){
-                        List<AutoFillRow> rows = AutoFillRow.find(AutoFillRow.class, "nrinv = ?",nr_inv);
+                    String nrinv  = nr_inv_edit.getText().toString();
+                    nr_inv = nrinv;
+                    if(nrinv!= null && nrinv.length()>0){
+                        List<AutoFillRow> rows = AutoFillRow.find(AutoFillRow.class, "nrinv = ?",nrinv);
                         if(rows.size()>0){
                         AutoFillRow row = rows.get(0);
                         autofillForm(row);
@@ -143,13 +229,54 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
         if (touch) {
+            //user has added a defect from the dropdown
             Spinner s = (Spinner) parent;
-            String defect = (String) s.getItemAtPosition(pos);
-            defectsChosen.add(defect);
-            LinearLayout l = (LinearLayout) findViewById(R.id.defsContainer);
-            TextView newDefect = new TextView(this);
-            newDefect.setText(defect);
-            l.addView(newDefect);
+            final String defect = (String) s.getItemAtPosition(pos);
+            if (!defectsChosen.contains(defect)) {
+                defectsChosen.add(defect);
+                LinearLayout l = (LinearLayout) findViewById(R.id.defsContainer);
+                TextView newDefect = new TextView(this);
+                newDefect.setText(defect);
+                l.addView(newDefect);
+                final EditText nr_inv_edit = (EditText)findViewById(R.id.nrInv);
+                final String nrinv  = nr_inv_edit.getText().toString();
+                //Clicking on specific defect will open prompt opening of photos annotated with that defect
+                newDefect.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //user has clicked defect
+                        AlertDialog.Builder alertadd = new AlertDialog.Builder(
+                                CreateReportActivity.this);
+                        LayoutInflater factory = LayoutInflater.from(CreateReportActivity.this);
+                        ArrayList<AnnotatedImage> imgs = (ArrayList)AnnotatedImage.find(AnnotatedImage.class,"nr_inv = ?",nrinv);
+                        final ArrayList<String> paths = new ArrayList<String>();
+                        for(AnnotatedImage ai : imgs){
+                            if(ai.getDefects().contains(defect)){
+                                paths.add(ai.getPath());
+                            }
+                        }
+                        final CharSequence[] paths_array  =  paths.toArray(new CharSequence[paths.size()]);
+
+                        alertadd.setItems(paths_array, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent();
+                                intent.setAction(android.content.Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.fromFile(new File(paths.get(which))), "image/png");
+                                startActivity(intent);
+                            }
+                        });
+                        alertadd.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dlg, int sumthin) {
+                                    //close dialog window
+                            }
+                        });
+
+                        alertadd.show();
+                    }
+                });
+
+            }
         }
     }
     public void onNothingSelected(AdapterView<?> parent) {
@@ -160,8 +287,9 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
         touch = true;
         return false;
     }
-    private Report genNewReport() {
 
+
+    private Report genNewReport() {
 
         String nrInv = ((EditText) (findViewById(R.id.nrInv))).getText().toString();
         String det1_et = ((EditText) (findViewById(R.id.det1))).getText().toString();
@@ -242,20 +370,29 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
                 condition, specialCare, crateNum, supportF, plastic, paper, noTape, ethafoam, foamRubber, position,defects,exitDate,installDate,endDate,returnDate,
                 changes1,changes2,checked1,checked2);
         rep.save();
+        Activity context = this;
         /*
             PDF creation begins below
          */
-        setContentView(R.layout.report_pdf);
-        LinearLayout cont = new LinearLayout(this);
+        LinearLayout cont = new LinearLayout(context);
         ArrayList<Detail> dets = (ArrayList) rep.getDetailsAsList();
-        TextView mainTitle = new TextView(this);
-        mainTitle.setTextSize(10);
+
+        final int left_margin = 20;
+        final int right_margin = 575;
+        final int cent_padding = 22;
+        final int column_width = 170;
+        final int t1b = left_margin;
+        final int t1e = left_margin+column_width;
+        final int t2b = t1e+cent_padding;
+        final int t2e = t2b+column_width;
+        final int t3b = t2e+cent_padding;
+        final int t3e = right_margin;
+
+        PDFTextFactory tf = new PDFTextFactory(context);
+        TextView mainTitle = tf.makeSubtitle();
         mainTitle.setText("Condition Report: Inv. #" + rep.getInvNum());
         mainTitle.layout(20, 20, 595, 50);
-
-        PDFTextFactory tf = new PDFTextFactory(this);
         cont.addView(mainTitle);
-
         for(int i = 0; i < dets.size(); i++)
         {
             Detail d = dets.get(i);
@@ -266,8 +403,8 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
             TextView det = tf.makeBodyText();
             det.setText(d.getDetail());
 
-            title.layout(20, 50 + (i * 79), 210, 50 + (i * 79) + 20);
-            det.layout(20, 50 + (i * 79) + 20, 210, 50 + (i * 79) + 20 + 59);
+            title.layout(t1b, 50 + (i * 79), t1e, 50 + (i * 79) + 20);
+            det.layout(t1b, 50 + (i * 79) + 20, t1e, 50 + (i * 79) + 20 + 59);
             cont.addView(title);
             cont.addView(det);
 
@@ -285,17 +422,18 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
         TextView wraptitle = tf.makeSubtitle();
         TextView prottitle = tf.makeSubtitle();
         TextView postitle = tf.makeSubtitle();
+        //second column
 
         wraptitle.setText("Wrapping"); postitle.setText("Position"); prottitle.setText("Protection");
-        wraptitle.layout(220, 50, 410, 65); prottitle.layout(220, 85, 410, 100); postitle.layout(220, 120, 410, 135);
-        wrap.layout(220, 65, 410, 80); prot.layout(220, 100, 410, 115); pos.layout(220, 135, 410, 150);
+        wraptitle.layout(t2b, 50, t2e, 65); prottitle.layout(t2b, 85, t2e, 100); postitle.layout(t2b, 120, t2e, 135);
+        wrap.layout(t2b, 65, t2e, 80); prot.layout(t2b, 100, t2e, 115); pos.layout(t2b, 135, t2e, 150);
 
         cont.addView(wraptitle); cont.addView(wrap); cont.addView(prottitle); cont.addView(prot); cont.addView(postitle); cont.addView(pos);
 
         ArrayList<String> defs = rep.getDefectsAsListofStrings();
         TextView defectstitle = tf.makeSubtitle();
         defectstitle.setText("Defects");
-        defectstitle.layout(220, 160, 410, 175);
+        defectstitle.layout(t2b, 160, t2e, 175);
         cont.addView(defectstitle);
 
         for(int i = 0; i < defs.size(); i++)
@@ -303,66 +441,76 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
             String d = defs.get(i);
             TextView title = tf.makeBodyText();
             title.setText(d);
-            title.layout(220, 175 + (i * 15), 410, 175 + (i * 15) + 15);
+            title.layout(t2b, 175 + (i * 15), t2e, 175 + (i * 15) + 15);
             cont.addView(title);
         }
-
+        final int dates_begin = 355;
+        final int text_line = 15;
         TextView datesandchange = tf.makeSubtitle();
         datesandchange.setText("Dates and Changes");
-        datesandchange.layout(420,50,595,65);
+        datesandchange.layout(t2b,dates_begin,t2e,dates_begin+text_line);
         cont.addView(datesandchange);
+        int vertical_cursor = dates_begin+text_line;
         if (rep.hasExitDate()){
             TextView datetext = tf.makeBodyText();
             datetext.setText("Exit Date:\n"+rep.getExitDate());
-            datetext.layout(420,65,595,110);
+            datetext.layout(t2b, vertical_cursor, t2e, vertical_cursor + (2 * text_line));
             cont.addView(datetext);
+            vertical_cursor += (3*text_line);
         }
-
         if (rep.hasInstallDate()){
             TextView datetext = tf.makeBodyText();
             datetext.setText("Install Date:\n"+rep.getInstallDate());
-            datetext.layout(420, 110, 595, 155);
+            datetext.layout(t2b, vertical_cursor, t2e, vertical_cursor + (2 * text_line));
             cont.addView(datetext);
+            vertical_cursor += (3*text_line);
         }
-
         TextView condition1 = tf.makeBodyText();
-        condition1.layout(420, 155, 595, 200);
+        condition1.layout(t2b, vertical_cursor, t2e, vertical_cursor+(3*text_line));
         if(rep.isSameCondition1())
             condition1.setText("Condition unchanged");
         else
             condition1.setText("Condition Changed:\n"+rep.getChanges1());
         cont.addView(condition1);
+        vertical_cursor += (4*text_line);
 
         if (rep.hasEndDate()){
             TextView datetext = tf.makeBodyText();
             datetext.setText("End Date:\n"+rep.getEndDate());
-            datetext.layout(420, 200, 595, 245);
+            datetext.layout(t2b, vertical_cursor, t2e, vertical_cursor + (2 * text_line));
             cont.addView(datetext);
+            vertical_cursor += (3*text_line);
         }
 
         TextView condition2 = tf.makeBodyText();
-        condition2.layout(420, 245, 595, 290);
+        condition2.layout(t2b, vertical_cursor, t2e, vertical_cursor+(3*text_line));
         if(rep.isSameCondition2())
             condition2.setText("Condition unchanged");
         else
             condition2.setText("Condition Changed:\n"+rep.getChanges2());
         cont.addView(condition2);
+        vertical_cursor += (4*text_line);
 
         if(rep.hasReturnDate()){
             TextView datetext = tf.makeBodyText();
             datetext.setText("Return Date:\n"+rep.getReturnDate());
-            datetext.layout(420, 290, 595, 335);
+            datetext.layout(t2b, vertical_cursor, t2e, vertical_cursor + (2 * text_line));
+            vertical_cursor += (3*text_line);
             cont.addView(datetext);
         }
 
-        View reportview = findViewById(R.id.pdfviewcontainer);
-        reportview.setDrawingCacheEnabled(true);
+        ArrayList<AnnotatedImage> imgs = (ArrayList)AnnotatedImage.find(AnnotatedImage.class, "nr_inv = ?", rep.getInvNum());
+        vertical_cursor = 50;
+        for(int i = 0; (i < 4 && i < imgs.size()); i++){
+            ImageView iv = new ImageView(context);
+            iv.layout(t3b,vertical_cursor,t3e,vertical_cursor+column_width);
+            AnnotatedImage img = imgs.get(i);
+            Bitmap bitmap = BitmapFactory.decodeFile(img.getPath());
+            iv.setImageBitmap(bitmap);
+            cont.addView(iv);
+            vertical_cursor+=185;
+        }
 
-        reportview.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        reportview.layout(0, 0, reportview.getMeasuredWidth(), reportview.getMeasuredHeight());
-
-        reportview.buildDrawingCache(true);
         PdfDocument document = new PdfDocument();
 
         // crate a page description
@@ -379,7 +527,7 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
         // finish the page
         document.finishPage(page);
         try {
-            verifyStoragePermissions(this);
+            verifyStoragePermissions(context);
             File root = Environment.getExternalStorageDirectory();
             root = new File(root,"ArcheoReport/Reports/"+rep.getExhibition().getName()+"/");
             root.mkdirs();
@@ -390,6 +538,7 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
             document.writeTo(pdfos);
             rep.setPdfpath(docfile.getAbsolutePath());
             rep.save();
+            Log.i("PDFPATH", rep.getPdfpath());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -398,6 +547,8 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
 
         // close the document
         document.close();
+
+
         return rep;
     }
 
@@ -442,7 +593,7 @@ public class CreateReportActivity extends AppCompatActivity implements AdapterVi
         if (requestCode == PICKFILE_RESULT_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             unannotated  = data.getData();
 
-            }
+        }
 
         else if((requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK && data != null && data.getData() != null)){
             unannotated = currentImgUri;

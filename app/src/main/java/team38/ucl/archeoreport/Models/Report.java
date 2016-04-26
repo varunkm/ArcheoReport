@@ -124,13 +124,17 @@ public class Report extends SugarRecord {
     }
 
     public String getExitDate(){
-        if (hasExitDate())
-            return df.format(new Date(exitDate));
+        df = new SimpleDateFormat("dd/MM/yyyy");
+        if (hasExitDate()) {
+            Date d = new Date(exitDate);
+            return df.format(d);
+        }
         else
             return "";
     }
 
     public String getInstallDate(){
+        df = new SimpleDateFormat("dd/MM/yyyy");
         if (hasInstallDate())
             return df.format(new Date(installDate));
         else
@@ -138,12 +142,14 @@ public class Report extends SugarRecord {
     }
 
     public String getEndDate(){
+        df = new SimpleDateFormat("dd/MM/yyyy");
         if (hasEndDate())
             return df.format(new Date(endDate));
         else
             return "";
     }
     public String getReturnDate(){
+        df = new SimpleDateFormat("dd/MM/yyyy");
         if (hasReturnDate())
             return df.format(new Date(returnDate));
         else
@@ -281,6 +287,7 @@ public class Report extends SugarRecord {
     {
 
         ArrayList<Detail> dets = new ArrayList<>();
+        dets.add(new Detail("General Condition",genCondition));
         dets.add(new Detail("Oggetto",det1));
         dets.add(new Detail("Tecnica",det2));
         dets.add(new Detail("Dimens",det3));
@@ -288,7 +295,6 @@ public class Report extends SugarRecord {
         dets.add(new Detail("Collacazione",det5));
         dets.add(new Detail("Stato Conserv",det6));
         dets.add(new Detail("Interventi Fatti",det7));
-        dets.add(new Detail("General Condition",genCondition));
         dets.add(new Detail("Special Care",specialCare));
         dets.add(new Detail("Crate Number",crateNumber));
         return dets;
